@@ -1,0 +1,52 @@
+- generic [ref=f3e2]:
+  - generic [ref=f3e3]:
+    - banner [ref=f3e4]:
+      - link "Back to public site" [ref=f3e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e11]:
+          - generic [ref=f3e12]: Vasudha Foundation
+          - generic [ref=f3e13]: Data Platform
+    - main [ref=f3e14]:
+      - generic [ref=f3e15]:
+        - generic [ref=f3e16]:
+          - heading "Sign in" [level=1] [ref=f3e17]
+          - paragraph [ref=f3e18]: Access the Vasudha Foundation data console.
+        - generic [ref=f3e19]:
+          - generic [ref=f3e20]:
+            - generic [ref=f3e21]:
+              - generic [ref=f3e22]: Email
+              - textbox "Email" [invalid] [ref=f3e23]:
+                - /placeholder: you@organisation.org
+              - paragraph [ref=f3e24]: Email is required
+            - generic [ref=f3e27]:
+              - generic [ref=f3e28]:
+                - generic [ref=f3e29]: Password
+                - button "Forgot password?" [ref=f3e30]
+              - generic [ref=f3e31]:
+                - textbox "Password" [invalid] [ref=f3e32]:
+                  - /placeholder: ••••••••
+                - button "Show password" [ref=f3e33]
+              - paragraph [ref=f3e34]: Password is required
+            - generic [ref=f3e37]:
+              - checkbox "Keep me signed in" [checked] [ref=f3e38]
+              - checkbox [checked] [aria-hidden] [ref=f3e42]
+              - generic [ref=f3e43]: Keep me signed in
+            - button "Login" [ref=f3e44]
+          - generic [ref=f3e45]:
+            - generic [ref=f3e46]: Demo accounts
+            - generic [ref=f3e51]:
+              - button [ref=f3e52]:
+                - generic [ref=f3e53]:
+                  - paragraph [ref=f3e54]: Super Admin
+                  - paragraph [ref=f3e55]: Review and manage everything
+                - code [ref=f3e56]: superadmin@vasudha.org
+              - button [ref=f3e57]:
+                - generic [ref=f3e58]:
+                  - paragraph [ref=f3e59]: Admin
+                  - paragraph [ref=f3e60]: Submit and manage datasets
+                - code [ref=f3e61]: admin@vasudha.org
+            - paragraph [ref=f3e62]: Authentication is mocked for this demo. Pick an account to explore the corresponding console.
+    - contentinfo [ref=f3e63]:
+      - link "Back to public website" [ref=f3e64] [cursor=pointer]:
+        - /url: /
+  - region "Notifications alt+T"

@@ -1,0 +1,160 @@
+- generic [ref=f3e2]:
+  - generic [ref=f3e67]:
+    - complementary [ref=f3e68]:
+      - generic [ref=f3e69]:
+        - link "Vasudha console home" [ref=f3e71] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - generic [ref=f3e77]: Admin Console
+        - navigation "Console navigation" [ref=f3e78]:
+          - link "Dashboard" [ref=f3e79] [cursor=pointer]:
+            - /url: /admin/dashboard
+          - link "My Datasets" [ref=f3e85] [cursor=pointer]:
+            - /url: /admin/dashboard#datasets
+          - link "Add Dataset" [ref=f3e88] [cursor=pointer]:
+            - /url: /admin/datasets/new
+          - link "Profile" [ref=f3e92] [cursor=pointer]:
+            - /url: /admin/profile
+        - generic [ref=f3e97]:
+          - generic [ref=f3e98]:
+            - generic [ref=f3e99]: "?"
+            - generic [ref=f3e100]:
+              - paragraph [ref=f3e101]: Admin
+              - paragraph [ref=f3e102]: Admin
+          - button "Logout" [ref=f3e103]
+    - generic [ref=f3e104]:
+      - banner [ref=f3e105]:
+        - heading "Dashboard" [level=1] [ref=f3e106]
+        - generic [ref=f3e107]:
+          - searchbox "Search" [ref=f3e109]
+          - button "Notifications" [ref=f3e110]
+          - button "Account menu" [ref=f3e114]:
+            - generic [ref=f3e115]: A
+      - main [ref=f3e116]:
+        - generic [ref=f3e118]:
+          - generic [ref=f3e119]:
+            - generic [ref=f3e120]:
+              - heading "Dashboard" [level=1] [ref=f3e121]
+              - paragraph [ref=f3e122]: Overview of the datasets you have submitted and their approval status.
+            - button "Add Dataset" [ref=f3e124] [cursor=pointer]
+          - generic [ref=f3e125]:
+            - generic [ref=f3e128]:
+              - paragraph [ref=f3e129]: Total Datasets
+              - paragraph [ref=f3e130]: "8"
+            - generic [ref=f3e138]:
+              - paragraph [ref=f3e139]: Pending
+              - paragraph [ref=f3e140]: "3"
+              - paragraph [ref=f3e141]: Awaiting approval
+            - generic [ref=f3e148]:
+              - paragraph [ref=f3e149]: Approved
+              - paragraph [ref=f3e150]: "4"
+              - paragraph [ref=f3e151]: Published
+            - generic [ref=f3e158]:
+              - paragraph [ref=f3e159]: Rejected
+              - paragraph [ref=f3e160]: "1"
+              - paragraph [ref=f3e161]: Needs revision
+          - generic [ref=f3e167]:
+            - generic [ref=f3e168]:
+              - generic [ref=f3e169]:
+                - heading "My Datasets" [level=3] [ref=f3e170]
+                - paragraph [ref=f3e171]: Track the review status of your submissions.
+              - searchbox "Search datasets" [ref=f3e172]
+            - table [ref=f3e175]:
+              - rowgroup [ref=f3e176]:
+                - row [ref=f3e177]:
+                  - columnheader "Chart Title" [ref=f3e178]
+                  - columnheader "Domain" [ref=f3e179]
+                  - columnheader "Chart Type" [ref=f3e180]
+                  - columnheader "Status" [ref=f3e181]
+                  - columnheader "Approval" [ref=f3e183]
+                  - columnheader "Created Date" [ref=f3e184]
+                  - columnheader "Actions" [ref=f3e185]
+              - rowgroup [ref=f3e186]:
+                - row [ref=f3e187]:
+                  - cell [ref=f3e188]:
+                    - link "Temperature Trend" [ref=f3e189] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-001
+                  - cell "Climate" [ref=f3e190]
+                  - cell "Line Chart" [ref=f3e191]
+                  - cell "Active" [ref=f3e192]
+                  - cell "Approved" [ref=f3e195]
+                  - cell "02 Jul 2026" [ref=f3e197]
+                  - cell [ref=f3e198]:
+                    - button "Actions for Temperature Trend" [ref=f3e199]
+                - row [ref=f3e200]:
+                  - cell [ref=f3e201]:
+                    - link "Renewable Energy Capacity" [ref=f3e202] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-002
+                  - cell "Energy" [ref=f3e203]
+                  - cell "State Heatmap" [ref=f3e204]
+                  - cell "Active" [ref=f3e205]
+                  - cell "Approved" [ref=f3e208]
+                  - cell "10 Jul 2026" [ref=f3e210]
+                  - cell [ref=f3e211]:
+                    - button "Actions for Renewable Energy Capacity" [ref=f3e212]
+                - row [ref=f3e213]:
+                  - cell [ref=f3e214]:
+                    - link "Power Generation Trend" [ref=f3e215] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-003
+                  - cell "Power" [ref=f3e216]
+                  - cell "Bar Chart" [ref=f3e217]
+                  - cell "Active" [ref=f3e218]
+                  - cell "Approved" [ref=f3e221]
+                  - cell "18 Jun 2026" [ref=f3e223]
+                  - cell [ref=f3e224]:
+                    - button "Actions for Power Generation Trend" [ref=f3e225]
+                - row [ref=f3e226]:
+                  - cell [ref=f3e227]:
+                    - link "Renewable Energy Locations" [ref=f3e228] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-004
+                  - cell "Energy" [ref=f3e229]
+                  - cell "India Map" [ref=f3e230]
+                  - cell "Active" [ref=f3e231]
+                  - cell "Approved" [ref=f3e234]
+                  - cell "25 Jul 2026" [ref=f3e236]
+                  - cell [ref=f3e237]:
+                    - button "Actions for Renewable Energy Locations" [ref=f3e238]
+                - row [ref=f3e239]:
+                  - cell [ref=f3e240]:
+                    - link "Climate Stations Map" [ref=f3e241] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-005
+                  - cell "Climate" [ref=f3e242]
+                  - cell "India Map" [ref=f3e243]
+                  - cell "Active" [ref=f3e244]
+                  - cell "Pending" [ref=f3e247]
+                  - cell "05 Sept 2026" [ref=f3e249]
+                  - cell [ref=f3e250]:
+                    - button "Actions for Climate Stations Map" [ref=f3e251]
+                - row [ref=f3e252]:
+                  - cell [ref=f3e253]:
+                    - link "Annual Rainfall" [ref=f3e254] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-006
+                  - cell "Climate" [ref=f3e255]
+                  - cell "Bar Chart" [ref=f3e256]
+                  - cell "Active" [ref=f3e257]
+                  - cell "Pending" [ref=f3e260]
+                  - cell "06 Sept 2026" [ref=f3e262]
+                  - cell [ref=f3e263]:
+                    - button "Actions for Annual Rainfall" [ref=f3e264]
+                - row [ref=f3e265]:
+                  - cell [ref=f3e266]:
+                    - link "Power Source Mix" [ref=f3e267] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-007
+                  - cell "Power" [ref=f3e268]
+                  - cell "Area Chart" [ref=f3e269]
+                  - cell "Active" [ref=f3e270]
+                  - cell "Rejected" [ref=f3e273]
+                  - cell "14 Aug 2026" [ref=f3e275]
+                  - cell [ref=f3e276]:
+                    - button "Actions for Power Source Mix" [ref=f3e277]
+                - row [ref=f3e278]:
+                  - cell [ref=f3e279]:
+                    - link "Peak Power Demand" [ref=f3e280] [cursor=pointer]:
+                      - /url: /admin/datasets/ds-008
+                  - cell "Power" [ref=f3e281]
+                  - cell "Line Chart" [ref=f3e282]
+                  - cell "Active" [ref=f3e283]
+                  - cell "Pending" [ref=f3e286]
+                  - cell "08 Sept 2026" [ref=f3e288]
+                  - cell [ref=f3e289]:
+                    - button "Actions for Peak Power Demand" [ref=f3e290]
+  - region "Notifications alt+T"

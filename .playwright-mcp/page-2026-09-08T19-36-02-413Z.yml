@@ -1,0 +1,127 @@
+- generic [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - complementary [ref=f6e4]:
+      - generic [ref=f6e5]:
+        - link "Vasudha console home" [ref=f6e7] [cursor=pointer]:
+          - /url: /admin
+        - generic [ref=f6e13]: Super Admin Console
+        - navigation "Console navigation" [ref=f6e14]:
+          - link "Dashboard" [ref=f6e15] [cursor=pointer]:
+            - /url: /admin
+          - link "Datasets" [ref=f6e21] [cursor=pointer]:
+            - /url: /admin/datasets
+          - link "Admins" [ref=f6e26] [cursor=pointer]:
+            - /url: /admin/users
+          - link "Settings" [ref=f6e32] [cursor=pointer]:
+            - /url: /admin/settings
+        - generic [ref=f6e36]:
+          - generic [ref=f6e37]:
+            - generic [ref=f6e38]: "?"
+            - generic [ref=f6e39]:
+              - paragraph [ref=f6e40]: Admin
+              - paragraph [ref=f6e41]: Super Admin
+          - button "Logout" [ref=f6e42]
+    - generic [ref=f6e43]:
+      - banner [ref=f6e44]:
+        - heading "Dataset Review" [level=1] [ref=f6e45]
+        - generic [ref=f6e46]:
+          - searchbox "Search" [ref=f6e48]
+          - button "Notifications" [ref=f6e49]
+          - button "Account menu" [ref=f6e53]:
+            - generic [ref=f6e54]: A
+      - main [ref=f6e55]:
+        - generic [ref=f6e57]:
+          - generic [ref=f6e58]:
+            - button "Back" [ref=f6e59]
+            - button "Edit" [ref=f6e60]
+          - generic [ref=f6e61]:
+            - generic [ref=f6e62]:
+              - generic [ref=f6e63]:
+                - generic [ref=f6e64]: Pending
+                - heading "Climate Stations Map" [level=2] [ref=f6e66]
+                - paragraph [ref=f6e67]: Weather observatories reporting annual mean temperature at monitoring stations.
+              - generic [ref=f6e68]:
+                - generic [ref=f6e69]:
+                  - term [ref=f6e70]: Domain
+                  - definition [ref=f6e71]: Climate
+                - generic [ref=f6e72]:
+                  - term [ref=f6e73]: Chart Type
+                  - definition [ref=f6e74]: India Map
+                - generic [ref=f6e75]:
+                  - term [ref=f6e76]: Data Template
+                  - definition [ref=f6e77]: Latitude / Longitude
+                - generic [ref=f6e78]:
+                  - term [ref=f6e79]: Uploaded by
+                  - definition [ref=f6e80]: research@vasudha.org
+                - generic [ref=f6e81]:
+                  - term [ref=f6e82]: Created
+                  - definition [ref=f6e83]: 05 Sept 2026, 02:30 pm
+                - generic [ref=f6e84]:
+                  - term [ref=f6e85]: Approved
+                  - definition [ref=f6e86]: —
+              - generic [ref=f6e87]:
+                - paragraph [ref=f6e88]: Source file
+                - generic [ref=f6e94]:
+                  - paragraph [ref=f6e95]: climate_stations.csv
+                  - paragraph [ref=f6e96]: 8 rows
+              - separator [ref=f6e97]
+              - paragraph [ref=f6e98]: Approving this dataset will publish the visualization on the public website under the Climate section. Rejected datasets remain hidden until revised and resubmitted.
+            - generic [ref=f6e99]:
+              - paragraph [ref=f6e100]: Visualization preview
+              - generic [ref=f6e102]:
+                - img "Interactive map of India with data points" [ref=f6e103]:
+                  - img [ref=f6e104]:
+                    - generic [ref=f6e105]:
+                      - generic [ref=f6e106] [cursor=pointer]
+                      - generic [ref=f6e109] [cursor=pointer]
+                      - generic [ref=f6e112] [cursor=pointer]
+                      - generic [ref=f6e115] [cursor=pointer]
+                      - generic [ref=f6e118] [cursor=pointer]
+                      - generic [ref=f6e121] [cursor=pointer]
+                      - generic [ref=f6e124] [cursor=pointer]
+                      - generic [ref=f6e127] [cursor=pointer]
+                  - generic [ref=f6e130]:
+                    - button "Zoom in" [ref=f6e131]
+                    - button "Zoom out" [ref=f6e132]
+                    - button "Reset view" [ref=f6e133]
+                - paragraph [ref=f6e135]: Hover a marker for details. Click to pin a data point.
+              - paragraph [ref=f6e136]: Data preview
+              - table [ref=f6e138]:
+                - caption [ref=f6e139]: First rows of the source dataset
+                - rowgroup [ref=f6e140]:
+                  - row [ref=f6e141]:
+                    - columnheader "Row" [ref=f6e142]
+                    - columnheader "Latitude" [ref=f6e143]
+                    - columnheader "Longitude" [ref=f6e144]
+                    - columnheader "Value" [ref=f6e145]
+                - rowgroup [ref=f6e146]:
+                  - row [ref=f6e147]:
+                    - cell "1" [ref=f6e148]
+                    - cell "28.60" [ref=f6e149]
+                    - cell "77.20" [ref=f6e150]
+                    - cell "18" [ref=f6e151]
+                  - row [ref=f6e152]:
+                    - cell "2" [ref=f6e153]
+                    - cell "28.61" [ref=f6e154]
+                    - cell "77.21" [ref=f6e155]
+                    - cell "22" [ref=f6e156]
+                  - row [ref=f6e157]:
+                    - cell "3" [ref=f6e158]
+                    - cell "28.62" [ref=f6e159]
+                    - cell "77.22" [ref=f6e160]
+                    - cell "26" [ref=f6e161]
+                  - row [ref=f6e162]:
+                    - cell "4" [ref=f6e163]
+                    - cell "28.63" [ref=f6e164]
+                    - cell "77.23" [ref=f6e165]
+                    - cell "30" [ref=f6e166]
+                  - row [ref=f6e167]:
+                    - cell "5" [ref=f6e168]
+                    - cell "28.64" [ref=f6e169]
+                    - cell "77.24" [ref=f6e170]
+                    - cell "34" [ref=f6e171]
+          - generic [ref=f6e172]:
+            - button "Delete" [ref=f6e173]
+            - button "Reject" [ref=f6e174]
+            - button "Approve" [ref=f6e175]
+  - region "Notifications alt+T"

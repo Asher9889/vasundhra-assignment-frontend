@@ -1,0 +1,242 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - banner [ref=f2e4]:
+        - generic [ref=f2e5]:
+          - link "Vasudha Foundation data platform home" [ref=f2e6] [cursor=pointer]:
+            - /url: /
+            - generic [ref=f2e12]:
+              - generic [ref=f2e13]: Vasudha Foundation
+              - generic [ref=f2e14]: Data Platform
+          - navigation "Primary" [ref=f2e15]:
+            - link "Climate" [ref=f2e16] [cursor=pointer]:
+              - /url: /climate
+            - link "Energy" [ref=f2e17] [cursor=pointer]:
+              - /url: /energy
+            - link "Power" [ref=f2e18] [cursor=pointer]:
+              - /url: /power
+            - link "About" [ref=f2e19] [cursor=pointer]:
+              - /url: /about
+          - button "Admin Login" [ref=f2e21] [cursor=pointer]
+      - main [ref=f2e22]:
+        - generic [ref=f2e26]:
+          - generic [ref=f2e27]: Verifiable open data, published by Vasudha Foundation
+          - heading "Climate, Energy & Power Data" [level=1] [ref=f2e28]
+          - paragraph [ref=f2e29]: An interactive platform presenting data-driven visualizations of climate, energy and power indicators across India — compiled from published datasets shown here as samples for this demonstration interface.
+          - generic [ref=f2e30]:
+            - button "Explore visualizations" [ref=f2e31] [cursor=pointer]
+            - button "About the platform" [ref=f2e32] [cursor=pointer]
+        - region "Published visualizations" [ref=f2e34]:
+          - generic [ref=f2e35]:
+            - heading "Published visualizations" [level=2] [ref=f2e36]
+            - paragraph [ref=f2e37]: Approved climate, energy and power datasets, presented as interactive visualizations in publication order.
+          - generic [ref=f2e38]:
+            - article [ref=f2e39]:
+              - generic [ref=f2e44]:
+                - list [ref=f2e46]:
+                  - listitem [ref=f2e47]:
+                    - img "5-Year Rolling Mean legend icon" [ref=f2e48]
+                    - text: 5-Year Rolling Mean
+                  - listitem [ref=f2e50]:
+                    - img "Annual Mean Temperature legend icon" [ref=f2e51]
+                    - text: Annual Mean Temperature
+                - application [ref=f2e53]:
+                  - generic [ref=f2e64]:
+                    - generic [ref=f2e65]:
+                      - generic [ref=f2e66]: "2015"
+                      - generic [ref=f2e68]: "2016"
+                      - generic [ref=f2e70]: "2017"
+                      - generic [ref=f2e72]: "2018"
+                      - generic [ref=f2e74]: "2020"
+                      - generic [ref=f2e76]: "2022"
+                      - generic [ref=f2e78]: "2024"
+                    - generic [ref=f2e80]:
+                      - generic [ref=f2e81]: "0"
+                      - generic [ref=f2e83]: "7"
+                      - generic [ref=f2e85]: "14"
+                      - generic [ref=f2e87]: "21"
+                      - generic [ref=f2e89]: "28"
+              - generic [ref=f2e91]:
+                - heading "Temperature Trend" [level=3] [ref=f2e93]
+                - generic [ref=f2e94]:
+                  - generic [ref=f2e95]: Climate
+                  - generic [ref=f2e96]: Line Chart
+                - generic [ref=f2e97]:
+                  - generic [ref=f2e98]: 02 Jul 2026
+                  - generic [ref=f2e101]: Published
+            - article [ref=f2e102]:
+              - generic [ref=f2e105]:
+                - img "State-level heatmap of India" [ref=f2e107]:
+                  - generic "Andaman and Nicobar Islands" [ref=f2e108] [cursor=pointer]
+                  - 'button "Andhra Pradesh: 11,200 MW" [ref=f2e109] [cursor=pointer]'
+                  - generic "Arunachal Pradesh" [ref=f2e110] [cursor=pointer]
+                  - 'button "Assam: 600 MW" [ref=f2e111] [cursor=pointer]'
+                  - 'button "Bihar: 900 MW" [ref=f2e112] [cursor=pointer]'
+                  - generic "Chandigarh" [ref=f2e113] [cursor=pointer]
+                  - 'button "Chhattisgarh: 2,100 MW" [ref=f2e114] [cursor=pointer]'
+                  - generic "Dadra and Nagar Haveli" [ref=f2e115] [cursor=pointer]
+                  - generic "Daman and Diu" [ref=f2e116] [cursor=pointer]
+                  - 'button "Delhi: 550 MW" [ref=f2e117] [cursor=pointer]'
+                  - 'button "Goa: 160 MW" [ref=f2e118] [cursor=pointer]'
+                  - 'button "Gujarat: 24,200 MW" [ref=f2e119] [cursor=pointer]'
+                  - 'button "Haryana: 2,800 MW" [ref=f2e120] [cursor=pointer]'
+                  - 'button "Himachal Pradesh: 2,600 MW" [ref=f2e121] [cursor=pointer]'
+                  - generic "Jammu and Kashmir" [ref=f2e122] [cursor=pointer]
+                  - 'button "Jharkhand: 700 MW" [ref=f2e123] [cursor=pointer]'
+                  - 'button "Karnataka: 19,100 MW" [ref=f2e124] [cursor=pointer]'
+                  - 'button "Kerala: 1,900 MW" [ref=f2e125] [cursor=pointer]'
+                  - generic "Lakshadweep" [ref=f2e126] [cursor=pointer]
+                  - 'button "Madhya Pradesh: 5,400 MW" [ref=f2e127] [cursor=pointer]'
+                  - 'button "Maharashtra: 13,200 MW" [ref=f2e128] [cursor=pointer]'
+                  - generic "Manipur" [ref=f2e129] [cursor=pointer]
+                  - generic "Meghalaya" [ref=f2e130] [cursor=pointer]
+                  - generic "Mizoram" [ref=f2e131] [cursor=pointer]
+                  - generic "Nagaland" [ref=f2e132] [cursor=pointer]
+                  - 'button "Odisha: 2,400 MW" [ref=f2e133] [cursor=pointer]'
+                  - generic "Puducherry" [ref=f2e134] [cursor=pointer]
+                  - 'button "Punjab: 3,200 MW" [ref=f2e135] [cursor=pointer]'
+                  - 'button "Rajasthan: 18,350 MW" [ref=f2e136] [cursor=pointer]'
+                  - generic "Sikkim" [ref=f2e137] [cursor=pointer]
+                  - 'button "Tamil Nadu: 15,800 MW" [ref=f2e138] [cursor=pointer]'
+                  - 'button "Telangana: 6,800 MW" [ref=f2e139] [cursor=pointer]'
+                  - generic "Tripura" [ref=f2e140] [cursor=pointer]
+                  - 'button "Uttar Pradesh: 4,900 MW" [ref=f2e141] [cursor=pointer]'
+                  - 'button "Uttarakhand: 1,800 MW" [ref=f2e142] [cursor=pointer]'
+                  - 'button "West Bengal: 1,200 MW" [ref=f2e143] [cursor=pointer]'
+                - generic [ref=f2e144]:
+                  - generic [ref=f2e145]:
+                    - paragraph [ref=f2e146]: India
+                    - paragraph [ref=f2e147]: 22 states with data
+                  - generic [ref=f2e148]:
+                    - paragraph [ref=f2e149]: Legend
+                    - generic [ref=f2e151]:
+                      - generic [ref=f2e152]: "160"
+                      - generic [ref=f2e153]: 24,200
+                    - paragraph [ref=f2e154]: MW
+                  - paragraph [ref=f2e155]: Hover or tab through states to inspect values. States without data are shown in grey.
+                  - generic [aria-hidden] [ref=f2e156]: "Map dimensions: 612 × 696"
+              - generic [ref=f2e157]:
+                - heading "Renewable Energy Capacity" [level=3] [ref=f2e159]
+                - generic [ref=f2e160]:
+                  - generic [ref=f2e161]: Energy
+                  - generic [ref=f2e162]: State Heatmap
+                - generic [ref=f2e163]:
+                  - generic [ref=f2e164]: 10 Jul 2026
+                  - generic [ref=f2e167]: Published
+            - article [ref=f2e168]:
+              - application [ref=f2e174]:
+                - generic [ref=f2e178]:
+                  - generic [ref=f2e179]:
+                    - generic [ref=f2e180]: "2016"
+                    - generic [ref=f2e182]: "2018"
+                    - generic [ref=f2e184]: "2020"
+                    - generic [ref=f2e186]: "2022"
+                    - generic [ref=f2e188]: "2024"
+                  - generic [ref=f2e190]:
+                    - generic [ref=f2e191]: "0"
+                    - generic [ref=f2e193]: "400"
+                    - generic [ref=f2e195]: "800"
+                    - generic [ref=f2e197]: 1,200
+                    - generic [ref=f2e199]: 1,600
+              - generic [ref=f2e201]:
+                - heading "Power Generation Trend" [level=3] [ref=f2e203]
+                - generic [ref=f2e204]:
+                  - generic [ref=f2e205]: Power
+                  - generic [ref=f2e206]: Bar Chart
+                - generic [ref=f2e207]:
+                  - generic [ref=f2e208]: 18 Jun 2026
+                  - generic [ref=f2e211]: Published
+            - article [ref=f2e212]:
+              - generic [ref=f2e215]:
+                - img "Interactive map of India with data points" [ref=f2e216]:
+                  - img [ref=f2e217]:
+                    - generic [ref=f2e218]:
+                      - generic [ref=f2e219] [cursor=pointer]
+                      - generic [ref=f2e222] [cursor=pointer]
+                      - generic [ref=f2e225] [cursor=pointer]
+                      - generic [ref=f2e228] [cursor=pointer]
+                      - generic [ref=f2e231] [cursor=pointer]
+                      - generic [ref=f2e234] [cursor=pointer]
+                      - generic [ref=f2e237] [cursor=pointer]
+                      - generic [ref=f2e240] [cursor=pointer]
+                      - generic [ref=f2e243] [cursor=pointer]
+                      - generic [ref=f2e246] [cursor=pointer]
+                      - generic [ref=f2e249] [cursor=pointer]
+                      - generic [ref=f2e252] [cursor=pointer]
+                  - generic [ref=f2e255]:
+                    - button "Zoom in" [ref=f2e256]
+                    - button "Zoom out" [ref=f2e257]
+                    - button "Reset view" [ref=f2e258]
+                - paragraph [ref=f2e260]: Hover a marker for details. Click to pin a data point.
+              - generic [ref=f2e261]:
+                - heading "Renewable Energy Locations" [level=3] [ref=f2e263]
+                - generic [ref=f2e264]:
+                  - generic [ref=f2e265]: Energy
+                  - generic [ref=f2e266]: India Map
+                - generic [ref=f2e267]:
+                  - generic [ref=f2e268]: 25 Jul 2026
+                  - generic [ref=f2e271]: Published
+        - region "How publishing works" [ref=f2e272]:
+          - generic [ref=f2e273]:
+            - heading "How visualizations are published" [level=2] [ref=f2e274]
+            - paragraph [ref=f2e275]: Every visualization on this site has passed a review workflow before appearing here.
+            - list [ref=f2e276]:
+              - listitem [ref=f2e277]:
+                - generic [ref=f2e278]: "01"
+                - generic [ref=f2e284]:
+                  - heading "Admin submits dataset" [level=3] [ref=f2e285]
+                  - paragraph [ref=f2e286]: Dataset submitted by a registered admin for review.
+              - listitem [ref=f2e287]:
+                - generic [ref=f2e288]: "02"
+                - generic [ref=f2e296]:
+                  - heading "Super Admin reviews" [level=3] [ref=f2e297]
+                  - paragraph [ref=f2e298]: The dataset is validated before it can be published.
+              - listitem [ref=f2e299]:
+                - generic [ref=f2e300]: "03"
+                - generic [ref=f2e306]:
+                  - heading "Approve or reject" [level=3] [ref=f2e307]
+                  - paragraph [ref=f2e308]: Approved datasets are published; rejected ones stay hidden.
+              - listitem [ref=f2e309]:
+                - generic [ref=f2e310]: "04"
+                - generic [ref=f2e316]:
+                  - heading "Published publicly" [level=3] [ref=f2e317]
+                  - paragraph [ref=f2e318]: Approved visualizations appear on the public website.
+            - paragraph [ref=f2e319]:
+              - text: Use the
+              - link "Admin Login" [ref=f2e320] [cursor=pointer]:
+                - /url: /login
+              - text: to explore the review and publishing workflow.
+      - contentinfo [ref=f2e321]:
+        - generic [ref=f2e322]:
+          - generic [ref=f2e323]:
+            - generic [ref=f2e324]:
+              - generic [ref=f2e330]:
+                - generic [ref=f2e331]: Vasudha Foundation
+                - generic [ref=f2e332]: Data Platform
+              - paragraph [ref=f2e333]: A public platform publishing evidence-based climate, energy and power data visualizations compiled from verified datasets.
+            - generic [ref=f2e334]:
+              - heading "Visualizations" [level=3] [ref=f2e335]
+              - list [ref=f2e336]:
+                - listitem [ref=f2e337]:
+                  - link "Climate" [ref=f2e338] [cursor=pointer]:
+                    - /url: /climate
+                - listitem [ref=f2e339]:
+                  - link "Energy" [ref=f2e340] [cursor=pointer]:
+                    - /url: /energy
+                - listitem [ref=f2e341]:
+                  - link "Power" [ref=f2e342] [cursor=pointer]:
+                    - /url: /power
+            - generic [ref=f2e343]:
+              - heading "About" [level=3] [ref=f2e344]
+              - list [ref=f2e345]:
+                - listitem [ref=f2e346]:
+                  - link "Overview" [ref=f2e347] [cursor=pointer]:
+                    - /url: /about
+                - listitem [ref=f2e348]:
+                  - link "Methodology" [ref=f2e349] [cursor=pointer]:
+                    - /url: /about
+          - generic [ref=f2e350]:
+            - paragraph [ref=f2e351]: © 2026 Vasudha Foundation. All rights reserved.
+            - paragraph [ref=f2e352]: This is a demonstration interface. Data shown is sample data for UI evaluation.
+    - region "Notifications alt+T"
+  - generic [aria-hidden] [ref=f2e353]: "400"

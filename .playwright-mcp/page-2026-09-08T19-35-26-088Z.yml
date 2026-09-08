@@ -1,0 +1,143 @@
+- generic [ref=f4e2]:
+  - generic [ref=f4e3]:
+    - complementary [ref=f4e4]:
+      - generic [ref=f4e5]:
+        - link "Vasudha console home" [ref=f4e7] [cursor=pointer]:
+          - /url: /admin
+        - generic [ref=f4e13]: Super Admin Console
+        - navigation "Console navigation" [ref=f4e14]:
+          - link "Dashboard" [ref=f4e15] [cursor=pointer]:
+            - /url: /admin
+          - link "Datasets" [ref=f4e21] [cursor=pointer]:
+            - /url: /admin/datasets
+          - link "Admins" [ref=f4e26] [cursor=pointer]:
+            - /url: /admin/users
+          - link "Settings" [ref=f4e32] [cursor=pointer]:
+            - /url: /admin/settings
+        - generic [ref=f4e36]:
+          - generic [ref=f4e37]:
+            - generic [ref=f4e38]: "?"
+            - generic [ref=f4e39]:
+              - paragraph [ref=f4e40]: Admin
+              - paragraph [ref=f4e41]: Super Admin
+          - button "Logout" [ref=f4e42]
+    - generic [ref=f4e43]:
+      - banner [ref=f4e44]:
+        - heading "Dataset Management" [level=1] [ref=f4e45]
+        - generic [ref=f4e46]:
+          - searchbox "Search" [ref=f4e48]
+          - button "Notifications" [ref=f4e49]
+          - button "Account menu" [ref=f4e53]:
+            - generic [ref=f4e54]: A
+      - main [ref=f4e55]:
+        - generic [ref=f4e57]:
+          - generic [ref=f4e59]:
+            - heading "Dataset Management" [level=1] [ref=f4e60]
+            - paragraph [ref=f4e61]: Review all submitted datasets and moderate publishing decisions.
+          - generic [ref=f4e62]:
+            - tablist [ref=f4e64]:
+              - tab "All (8)" [selected] [ref=f4e65]
+              - tab "Pending (3)" [ref=f4e66]
+              - tab "Approved (4)" [ref=f4e67]
+              - tab "Rejected (1)" [ref=f4e68]
+            - searchbox "Search datasets" [ref=f4e70]
+          - table [ref=f4e73]:
+            - rowgroup [ref=f4e74]:
+              - row [ref=f4e75]:
+                - columnheader "Chart Title" [ref=f4e76]
+                - columnheader "Domain" [ref=f4e77]
+                - columnheader "Chart Type" [ref=f4e78]
+                - columnheader "Added By" [ref=f4e79]
+                - columnheader "Approval" [ref=f4e80]
+                - columnheader "Created Date" [ref=f4e81]
+                - columnheader "Actions" [ref=f4e82]
+            - rowgroup [ref=f4e83]:
+              - row [ref=f4e84]:
+                - cell [ref=f4e85]:
+                  - link "Temperature Trend" [ref=f4e86] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-001
+                - cell "Climate" [ref=f4e87]
+                - cell "Line Chart" [ref=f4e88]
+                - cell "admin@vasudha.org" [ref=f4e89]
+                - cell "Approved" [ref=f4e90]
+                - cell "02 Jul 2026" [ref=f4e92]
+                - cell [ref=f4e93]:
+                  - button "Actions for Temperature Trend" [ref=f4e94]
+              - row [ref=f4e95]:
+                - cell [ref=f4e96]:
+                  - link "Renewable Energy Capacity" [ref=f4e97] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-002
+                - cell "Energy" [ref=f4e98]
+                - cell "State Heatmap" [ref=f4e99]
+                - cell "admin@vasudha.org" [ref=f4e100]
+                - cell "Approved" [ref=f4e101]
+                - cell "10 Jul 2026" [ref=f4e103]
+                - cell [ref=f4e104]:
+                  - button "Actions for Renewable Energy Capacity" [ref=f4e105]
+              - row [ref=f4e106]:
+                - cell [ref=f4e107]:
+                  - link "Power Generation Trend" [ref=f4e108] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-003
+                - cell "Power" [ref=f4e109]
+                - cell "Bar Chart" [ref=f4e110]
+                - cell "operations@vasudha.org" [ref=f4e111]
+                - cell "Approved" [ref=f4e112]
+                - cell "18 Jun 2026" [ref=f4e114]
+                - cell [ref=f4e115]:
+                  - button "Actions for Power Generation Trend" [ref=f4e116]
+              - row [ref=f4e117]:
+                - cell [ref=f4e118]:
+                  - link "Renewable Energy Locations" [ref=f4e119] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-004
+                - cell "Energy" [ref=f4e120]
+                - cell "India Map" [ref=f4e121]
+                - cell "admin@vasudha.org" [ref=f4e122]
+                - cell "Approved" [ref=f4e123]
+                - cell "25 Jul 2026" [ref=f4e125]
+                - cell [ref=f4e126]:
+                  - button "Actions for Renewable Energy Locations" [ref=f4e127]
+              - row [ref=f4e128]:
+                - cell [ref=f4e129]:
+                  - link "Climate Stations Map" [ref=f4e130] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-005
+                - cell "Climate" [ref=f4e131]
+                - cell "India Map" [ref=f4e132]
+                - cell "research@vasudha.org" [ref=f4e133]
+                - cell "Pending" [ref=f4e134]
+                - cell "05 Sept 2026" [ref=f4e136]
+                - cell [ref=f4e137]:
+                  - button "Actions for Climate Stations Map" [ref=f4e138]
+              - row [ref=f4e139]:
+                - cell [ref=f4e140]:
+                  - link "Annual Rainfall" [ref=f4e141] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-006
+                - cell "Climate" [ref=f4e142]
+                - cell "Bar Chart" [ref=f4e143]
+                - cell "research@vasudha.org" [ref=f4e144]
+                - cell "Pending" [ref=f4e145]
+                - cell "06 Sept 2026" [ref=f4e147]
+                - cell [ref=f4e148]:
+                  - button "Actions for Annual Rainfall" [ref=f4e149]
+              - row [ref=f4e150]:
+                - cell [ref=f4e151]:
+                  - link "Power Source Mix" [ref=f4e152] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-007
+                - cell "Power" [ref=f4e153]
+                - cell "Area Chart" [ref=f4e154]
+                - cell "operations@vasudha.org" [ref=f4e155]
+                - cell "Rejected" [ref=f4e156]
+                - cell "14 Aug 2026" [ref=f4e158]
+                - cell [ref=f4e159]:
+                  - button "Actions for Power Source Mix" [ref=f4e160]
+              - row [ref=f4e161]:
+                - cell [ref=f4e162]:
+                  - link "Peak Power Demand" [ref=f4e163] [cursor=pointer]:
+                    - /url: /admin/datasets/ds-008
+                - cell "Power" [ref=f4e164]
+                - cell "Line Chart" [ref=f4e165]
+                - cell "operations@vasudha.org" [ref=f4e166]
+                - cell "Pending" [ref=f4e167]
+                - cell "08 Sept 2026" [ref=f4e169]
+                - cell [ref=f4e170]:
+                  - button "Actions for Peak Power Demand" [ref=f4e171]
+  - region "Notifications alt+T"
