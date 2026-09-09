@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link, useLocation } from "react-router-dom"
 import { Menu, Search, Bell } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,6 +28,9 @@ const notifications = [
 
 export function AdminHeader({ title, roleLabel, currentUser, onMenuClick, showSearch = true }: AdminHeaderProps) {
   const [notifOpen, setNotifOpen] = useState(false)
+  const location = useLocation()
+  const isSuperAdmin = location.pathname.startsWith("/super-admin")
+  const profilePath = isSuperAdmin ? "/super-admin/profile" : "/admin/profile"
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80 sm:px-6">
@@ -94,8 +98,7 @@ export function AdminHeader({ title, roleLabel, currentUser, onMenuClick, showSe
               {currentUser?.email ?? "admin@vasudha.org"}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem render={<Link to={profilePath} />}>Profile</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

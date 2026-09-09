@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, Pencil } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -37,7 +37,7 @@ export default function DatasetDetailPage() {
           <EmptyState
             title="Dataset not found"
             description="This dataset may have been removed or the link is incorrect."
-            action={<Link to="/admin/datasets">Back to dataset management</Link>}
+            action={<Button variant="outline" size="sm" onClick={() => navigate(-1)}>Go back</Button>}
           />
         </div>
       </div>
@@ -81,7 +81,7 @@ export default function DatasetDetailPage() {
       setSubmitting(false)
       setDialog(null)
       toast.success(`"${current.title}" deleted.`)
-      navigate("/admin/datasets")
+      navigate(-1)
     }, 500)
   }
 

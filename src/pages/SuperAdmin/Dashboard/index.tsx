@@ -41,7 +41,7 @@ export default function SuperAdminDashboard() {
 
   function onAction(action: DatasetAction, dataset: Dataset) {
     if (action === "view") {
-      navigate(`/admin/datasets/${dataset.id}`)
+      navigate(`/super-admin/datasets/${dataset.id}`)
     } else if (action === "approve") {
       setTarget(dataset)
       setDialog("approve")
@@ -134,7 +134,7 @@ export default function SuperAdminDashboard() {
               className="w-56"
               aria-label="Search datasets"
             />
-            <Button variant="outline" render={<Link to="/admin/datasets" />}>
+            <Button variant="outline" render={<Link to="/super-admin/datasets" />}>
               Manage all
             </Button>
           </div>
@@ -144,7 +144,7 @@ export default function SuperAdminDashboard() {
           datasets={rows}
           role="super-admin"
           onAction={onAction}
-          detailHref={(d) => `/admin/datasets/${d.id}`}
+          detailHref={(d) => `/super-admin/datasets/${d.id}`}
         />
       </div>
 

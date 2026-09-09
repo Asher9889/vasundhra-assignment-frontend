@@ -53,7 +53,7 @@ export default function SuperAdminDatasetsPage() {
   })
 
   function onAction(action: DatasetAction, dataset: Dataset) {
-    if (action === "view") navigate(`/admin/datasets/${dataset.id}`)
+    if (action === "view") navigate(`/super-admin/datasets/${dataset.id}`)
     else if (action === "approve") {
       setTarget(dataset)
       setDialog("approve")
@@ -139,7 +139,7 @@ export default function SuperAdminDatasetsPage() {
         datasets={rows}
         role="super-admin"
         onAction={onAction}
-        detailHref={(d) => `/admin/datasets/${d.id}`}
+        detailHref={(d) => `/super-admin/datasets/${d.id}`}
         emptyTitle="No datasets found"
         emptyDescription="Try a different filter or search term."
       />

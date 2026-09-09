@@ -7,12 +7,14 @@ import { useAuth } from "@/hooks/useAuth"
 
 const pageTitles: Record<string, string> = {
   "/admin": "Dashboard",
-  "/admin/datasets": "Dataset Management",
+  "/admin/datasets": "My Datasets",
   "/admin/datasets/new": "Add Dataset",
-  "/admin/users": "Admin Management",
-  "/admin/settings": "Settings",
-  "/admin/dashboard": "Dashboard",
   "/admin/profile": "Profile",
+  "/super-admin": "Dashboard",
+  "/super-admin/datasets": "Dataset Management",
+  "/super-admin/users": "Admin Management",
+  "/super-admin/settings": "Settings",
+  "/super-admin/profile": "Profile",
 }
 
 function sidebarRoleFrom(user: { role: typeof USER_ROLE[keyof typeof USER_ROLE] } | null): SidebarRole {
@@ -25,8 +27,10 @@ export function AdminShell() {
   const { user } = useAuth()
   const role = sidebarRoleFrom(user)
 
+  const isDatasetDetail = location.pathname.includes("/datasets/") && location.pathname !== "/admin/datasets/new" && location.pathname !== "/super-admin/datasets/new"
+
   const title =
-    pageTitles[location.pathname] ?? (location.pathname.startsWith("/admin/datasets/") ? "Dataset Review" : "Console")
+    pageTitles[location.pathname] ?? (isDatasetDetail ? "Dataset Review" : "Console")
 
   return (
     <div className="min-h-screen bg-background">

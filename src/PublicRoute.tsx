@@ -5,8 +5,8 @@ import { USER_ROLE } from "@/constants/user/user.constant"
 import type { TUserRole } from "@/constants/user/user.types"
 
 const HOME_PATH: Record<TUserRole, string> = {
-  [USER_ROLE.SUPER_ADMIN]: "/admin",
-  [USER_ROLE.ADMIN]: "/admin/dashboard",
+  [USER_ROLE.SUPER_ADMIN]: "/super-admin",
+  [USER_ROLE.ADMIN]: "/admin",
 }
 
 export default function PublicRoute() {

@@ -125,7 +125,7 @@ export function AddDatasetForm() {
       setSubmitStatus("success")
       toast.success("Dataset submitted for Super Admin approval.")
       resetForm()
-      window.setTimeout(() => navigate("/admin/dashboard"), 400)
+      window.setTimeout(() => navigate("/admin"), 400)
     }, 900)
   }
 
@@ -176,7 +176,7 @@ export function AddDatasetForm() {
                   aria-checked={templateType === t.value}
                   onClick={() => setTemplateType(t.value)}
                   className={cn(
-                    "flex items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors",
+                    "flex cursor-pointer items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors",
                     templateType === t.value
                       ? "border-primary bg-primary/5 text-foreground"
                       : "border-input text-muted-foreground hover:border-primary/40"

@@ -8,11 +8,6 @@ import type { TUserSortBy, TUserSortOrder } from "../types/users.types"
 const PAGE_SIZE = 10
 const DEFAULT_SORT = "createdAt:desc"
 
-/**
- * Owns the list state for the users page: reads active filters from the URL
- * (so they survive refreshes), debounces the search box, and keeps the URL in
- * sync. Any non-pagination change resets the list to page 1.
- */
 export function useUsersQuery() {
   const [searchParams, setSearchParams] = useSearchParams()
 

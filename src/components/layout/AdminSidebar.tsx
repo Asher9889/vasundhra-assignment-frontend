@@ -25,15 +25,15 @@ interface NavItem {
 }
 
 const superAdminNav: NavItem[] = [
-  { label: "Dashboard", to: "/admin", icon: LayoutDashboard, end: true },
-  { label: "Datasets", to: "/admin/datasets", icon: Database },
-  { label: "Admins", to: "/admin/users", icon: Users },
-  { label: "Settings", to: "/admin/settings", icon: Settings },
+  { label: "Dashboard", to: "/super-admin", icon: LayoutDashboard, end: true },
+  { label: "Datasets", to: "/super-admin/datasets", icon: Database },
+  { label: "Admins", to: "/super-admin/users", icon: Users },
+  { label: "Settings", to: "/super-admin/settings", icon: Settings },
 ]
 
 const adminNav: NavItem[] = [
-  { label: "Dashboard", to: "/admin/dashboard", icon: LayoutDashboard, end: true },
-  { label: "My Datasets", to: "/admin/dashboard#datasets", icon: FolderOpen },
+  { label: "Dashboard", to: "/admin", icon: LayoutDashboard, end: true },
+  { label: "My Datasets", to: "/admin#datasets", icon: FolderOpen },
   { label: "Add Dataset", to: "/admin/datasets/new", icon: FilePlus2 },
   { label: "Profile", to: "/admin/profile", icon: UserCircle },
 ]
@@ -52,7 +52,7 @@ export function AdminSidebar({ role, open, onClose, currentUser }: AdminSidebarP
   const content = (
     <div className="flex h-full flex-col">
       <div className="flex h-16 shrink-0 items-center justify-between border-b px-4">
-        <Link to={role === "super-admin" ? "/admin" : "/admin/dashboard"} aria-label="Vasudha console home">
+        <Link to={role === "super-admin" ? "/super-admin" : "/admin"} aria-label="Vasudha console home">
           <Logo compact />
         </Link>
         <Button variant="ghost" size="icon-sm" className="lg:hidden" onClick={onClose} aria-label="Close sidebar">

@@ -30,12 +30,12 @@ export function SelectDomain({ value, onChange, id }: SelectDomainProps) {
         onChange(v as Domain)
       }}
     >
-      <SelectTrigger className="w-full" id={id} aria-label="Domain">
+      <SelectTrigger className="w-full cursor-pointer" id={id} aria-label="Domain">
         <SelectValue placeholder="Select a domain" />
       </SelectTrigger>
       <SelectContent>
         {(["climate", "energy", "power"] as const).map((d) => (
-          <SelectItem key={d} value={d}>
+          <SelectItem className="cursor-pointer" key={d} value={d}>
             {domainLabels[d]}
           </SelectItem>
         ))}

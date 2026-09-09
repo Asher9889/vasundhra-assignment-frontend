@@ -26,7 +26,7 @@ export function RoleGuard({ roles, children }: RoleGuardProps) {
           </p>
         </div>
         <Button variant="outline" size="sm" render={<Link to="/" />}>
-          Go to dashboard
+          Back to home
         </Button>
       </div>
     )
