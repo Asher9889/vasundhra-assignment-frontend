@@ -1,3 +1,5 @@
+import type { TUserRole } from "@/constants/user/user.constant"
+
 export type Domain = "climate" | "energy" | "power"
 
 export type ChartType = "line" | "bar" | "area" | "india-map" | "state-heatmap"
@@ -10,7 +12,7 @@ export type DatasetActiveStatus = "active" | "inactive"
 
 export type AdminAccountStatus = "active" | "inactive"
 
-export type Role = "SUPER_ADMIN" | "ADMIN"
+export type Role = TUserRole
 
 export interface SeriesDataPoint {
   label: string

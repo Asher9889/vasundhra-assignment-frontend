@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "sonner"
+import { loginAs } from "@/lib/auth-store"
 import type { DemoAccount, LoginErrors, LoginFormValues, LoginStatus } from "@/types/auth"
 
 const demoAccounts: DemoAccount[] = [
@@ -75,6 +76,7 @@ export function LoginForm() {
     window.setTimeout(() => {
       const matchesDemo = demoAccounts.find((a) => a.email === values.email.toLowerCase())
       if (matchesDemo) {
+        loginAs({ name: matchesDemo.label, email: matchesDemo.email, role: matchesDemo.role })
         setStatus("success")
         toast.success(`Signed in as ${matchesDemo.label}`)
         window.setTimeout(() => navigate(matchesDemo.redirectTo), 400)

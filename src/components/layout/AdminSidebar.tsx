@@ -13,6 +13,7 @@ import {
 import { Logo } from "@/components/common/Logo"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { logout } from "@/lib/auth-store"
 
 export type SidebarRole = "super-admin" | "admin"
 
@@ -103,6 +104,7 @@ export function AdminSidebar({ role, open, onClose, currentUser }: AdminSidebarP
           variant="ghost"
           className="w-full justify-start text-muted-foreground"
           onClick={() => {
+            logout()
             navigate("/login")
           }}
         >

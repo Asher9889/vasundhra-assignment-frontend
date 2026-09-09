@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import { Logo } from "@/components/common/Logo"
-import { LoginForm } from "@/features/auth/LoginForm"
+import { LoginForm } from "@/features/login/LoginForm"
 
 export default function LoginPage() {
   return (

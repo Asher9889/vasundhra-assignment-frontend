@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { useLocation } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import { AdminSidebar, type SidebarRole } from "@/components/layout/AdminSidebar"
 import { AdminHeader } from "@/components/layout/AdminHeader"
-import type { ReactNode } from "react"
+import { USER_ROLE } from "@/constants/user/user.constant"
+import { useAuthUser } from "@/lib/auth-store"
 
 const pageTitles: Record<string, string> = {
   "/admin": "Dashboard",
@@ -14,15 +15,15 @@ const pageTitles: Record<string, string> = {
   "/admin/profile": "Profile",
 }
 
-interface AdminShellProps {
-  role: SidebarRole
-  children: ReactNode
-  currentUser?: { name?: string; email?: string }
+function sidebarRoleFrom(user: { role: typeof USER_ROLE[keyof typeof USER_ROLE] } | null): SidebarRole {
+  return user?.role === USER_ROLE.SUPER_ADMIN ? "super-admin" : "admin"
 }
 
-export function AdminShell({ role, children, currentUser }: AdminShellProps) {
+export function AdminShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
+  const user = useAuthUser()
+  const role = sidebarRoleFrom(user)
 
   const title =
     pageTitles[location.pathname] ?? (location.pathname.startsWith("/admin/datasets/") ? "Dataset Review" : "Console")
@@ -34,8 +35,8 @@ export function AdminShell({ role, children, currentUser }: AdminShellProps) {
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         currentUser={{
-          name: currentUser?.name,
-          email: currentUser?.email,
+          name: user?.name,
+          email: user?.email,
           roleLabel: role === "super-admin" ? "Super Admin" : "Admin",
         }}
       />
@@ -43,11 +44,13 @@ export function AdminShell({ role, children, currentUser }: AdminShellProps) {
         <AdminHeader
           title={title}
           roleLabel={role === "super-admin" ? "Super Admin" : "Admin"}
-          currentUser={currentUser}
+          currentUser={user ?? undefined}
           onMenuClick={() => setSidebarOpen(true)}
         />
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          <div className="mx-auto max-w-7xl">{children}</div>
+          <div className="mx-auto max-w-7xl">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

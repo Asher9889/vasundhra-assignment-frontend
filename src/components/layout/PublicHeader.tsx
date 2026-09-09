@@ -43,7 +43,7 @@ export function PublicHeader() {
 
         <div className="hidden md:block">
           <Button variant="outline" className="text-sm" render={<Link to="/login" />}>
-            Admin Login
+            Login
           </Button>
         </div>
 
@@ -79,7 +79,7 @@ export function PublicHeader() {
             ))}
             <div className="mt-2 border-t pt-3">
               <Button variant="outline" className="w-full" render={<Link to="/login" />}>
-                Admin Login
+                Login
               </Button>
             </div>
           </nav>
