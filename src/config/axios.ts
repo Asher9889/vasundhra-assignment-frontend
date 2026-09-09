@@ -1,4 +1,4 @@
-import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, type AxiosRequestConfig, type InternalAxiosRequestConfig } from 'axios';
 import envConfig from './envConfig';
 
 const api = axios.create({
@@ -14,7 +14,6 @@ export class ApiError extends Error {
         this.statusCode = statusCode;
     }
 }
-
 
 api.interceptors.response.use(
     function onFulfilled(response) {
@@ -75,4 +74,8 @@ api.interceptors.response.use(
     }
 )
 
-export default api;
+const apiRequest = async <T>(config: AxiosRequestConfig): Promise<T> => {
+    return api.request<T>(config) as unknown as Promise<T>;
+};
+
+export { apiRequest };

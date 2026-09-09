@@ -1,5 +1,5 @@
 import queryClient from './queryClient';
 import apiEndPoints from './apiEndPoints';
-import api from './axios';
+import { apiRequest } from './axios';
 
-export { queryClient, apiEndPoints, api };
+export { queryClient, apiEndPoints,  apiRequest };

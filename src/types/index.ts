@@ -1,4 +1,4 @@
-import type { TUserRole } from "@/constants/user/user.constant"
+import type { TUserRole } from "@/constants/user/user.types"
 
 export type Domain = "climate" | "energy" | "power"
 

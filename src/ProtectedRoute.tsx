@@ -1,10 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { useAuthUser } from "@/lib/auth-store"
+import { useAuth } from "@/hooks/useAuth"
+import { SplashScreen } from "@/components/common/SplashScreen"
 
 export default function ProtectedRoute() {
-  const user = useAuthUser()
+  const { status } = useAuth()
 
-  if (!user) {
+  if (status === "CHECKING") {
+    return <SplashScreen />
+  }
+
+  if (status === "UNAUTHENTICATED") {
     return <Navigate to="/login" replace />
   }
 

@@ -14,6 +14,20 @@ const apiEndPoints = {
         },
 
     },
+    users: {
+        list: {
+            url: "/users",
+            method: "GET"
+        },
+        create: {
+            url: "/users",
+            method: "POST"
+        },
+        updateStatus: (id: string) => ({
+            url: `/users/${id}/status`,
+            method: "PATCH"
+        }),
+    },
 }    
 
 export default apiEndPoints;

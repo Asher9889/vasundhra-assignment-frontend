@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom"
 import { AdminSidebar, type SidebarRole } from "@/components/layout/AdminSidebar"
 import { AdminHeader } from "@/components/layout/AdminHeader"
 import { USER_ROLE } from "@/constants/user/user.constant"
-import { useAuthUser } from "@/lib/auth-store"
+import { useAuth } from "@/hooks/useAuth"
 
 const pageTitles: Record<string, string> = {
   "/admin": "Dashboard",
@@ -22,7 +22,7 @@ function sidebarRoleFrom(user: { role: typeof USER_ROLE[keyof typeof USER_ROLE] 
 export function AdminShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
-  const user = useAuthUser()
+  const { user } = useAuth()
   const role = sidebarRoleFrom(user)
 
   const title =
@@ -35,7 +35,6 @@ export function AdminShell() {
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         currentUser={{
-          name: user?.name,
           email: user?.email,
           roleLabel: role === "super-admin" ? "Super Admin" : "Admin",
         }}

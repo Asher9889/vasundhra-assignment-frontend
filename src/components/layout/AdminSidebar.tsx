@@ -1,4 +1,4 @@
-import { NavLink, Link, useNavigate } from "react-router-dom"
+import { NavLink, Link } from "react-router-dom"
 import {
   LayoutDashboard,
   Database,
@@ -13,7 +13,7 @@ import {
 import { Logo } from "@/components/common/Logo"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { logout } from "@/lib/auth-store"
+import { useLogoutMutation } from "@/hooks/useLogoutMutation"
 
 export type SidebarRole = "super-admin" | "admin"
 
@@ -42,11 +42,11 @@ interface AdminSidebarProps {
   role: SidebarRole
   open: boolean
   onClose: () => void
-  currentUser?: { name?: string; email?: string; roleLabel: string }
+  currentUser?: { email?: string; roleLabel: string }
 }
 
 export function AdminSidebar({ role, open, onClose, currentUser }: AdminSidebarProps) {
-  const navigate = useNavigate()
+  const logoutMutation = useLogoutMutation()
   const nav = role === "super-admin" ? superAdminNav : adminNav
 
   const content = (
@@ -91,10 +91,10 @@ export function AdminSidebar({ role, open, onClose, currentUser }: AdminSidebarP
           {currentUser ? (
             <>
               <span className="flex size-7 items-center justify-center rounded-full bg-muted text-[11px] font-semibold">
-                {(currentUser.name ?? currentUser.email ?? "?").charAt(0).toUpperCase()}
+                {(currentUser.email ?? "?").charAt(0).toUpperCase()}
               </span>
               <div className="min-w-0 leading-tight">
-                <p className="truncate text-xs font-medium text-foreground">{currentUser.name ?? "Admin"}</p>
+                <p className="truncate text-xs font-medium text-foreground">{currentUser.email}</p>
                 <p className="text-[10px] text-muted-foreground">{currentUser.roleLabel}</p>
               </div>
             </>
@@ -103,13 +103,11 @@ export function AdminSidebar({ role, open, onClose, currentUser }: AdminSidebarP
         <Button
           variant="ghost"
           className="w-full justify-start text-muted-foreground"
-          onClick={() => {
-            logout()
-            navigate("/login")
-          }}
+          onClick={() => logoutMutation.mutate()}
+          disabled={logoutMutation.isPending}
         >
           <LogOut className="size-4" />
-          Logout
+          {logoutMutation.isPending ? "Logging out..." : "Logout"}
         </Button>
       </div>
     </div>

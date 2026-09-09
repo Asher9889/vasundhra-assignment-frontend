@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { ShieldAlert } from "lucide-react"
-import { useAuthUser } from "@/lib/auth-store"
+import { useAuth } from "@/hooks/useAuth"
 import { Button } from "@/components/ui/button"
 import type { UserRole } from "@/types/route.type"
 
@@ -11,7 +11,7 @@ interface RoleGuardProps {
 }
 
 export function RoleGuard({ roles, children }: RoleGuardProps) {
-  const user = useAuthUser()
+  const { user } = useAuth()
 
   if (!user || !roles.includes(user.role)) {
     return (

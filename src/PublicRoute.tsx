@@ -1,12 +1,23 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { useAuthUser } from "@/lib/auth-store"
-import { roleHomePath } from "@/lib/auth-store"
+import { useAuth } from "@/hooks/useAuth"
+import { SplashScreen } from "@/components/common/SplashScreen"
+import { USER_ROLE } from "@/constants/user/user.constant"
+import type { TUserRole } from "@/constants/user/user.types"
+
+const HOME_PATH: Record<TUserRole, string> = {
+  [USER_ROLE.SUPER_ADMIN]: "/admin",
+  [USER_ROLE.ADMIN]: "/admin/dashboard",
+}
 
 export default function PublicRoute() {
-  const user = useAuthUser()
+  const { user, status } = useAuth()
+
+  if (status === "CHECKING") {
+    return <SplashScreen />
+  }
 
   if (user) {
-    return <Navigate to={roleHomePath(user.role)} replace />
+    return <Navigate to={HOME_PATH[user.role] ?? "/"} replace />
   }
 
   return <Outlet />
