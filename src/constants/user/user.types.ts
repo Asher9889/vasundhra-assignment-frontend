@@ -12,4 +12,14 @@ interface IUser {
     updatedAt: string
 }
 
-export type { IUser, TUserRole, TAccountStatus };
+interface AdminUser {
+    id: string,
+    email: string,
+    name?: string,
+    role: TUserRole,
+    status: TAccountStatus,
+    createdAt: string,
+    lastLogin?: string
+}
+
+export type { AdminUser, IUser, TAccountStatus, TUserRole };

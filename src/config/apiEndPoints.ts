@@ -28,6 +28,12 @@ const apiEndPoints = {
             method: "PATCH"
         }),
     },
+    datasets: {
+        parse: {
+            url: "/datasets",
+            method: "POST"
+        },
+    },
 }    
 
 export default apiEndPoints;

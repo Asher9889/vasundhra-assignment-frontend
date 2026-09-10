@@ -8,7 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts"
-import type { ChartData, SeriesDataPoint } from "@/types"
+import type { ChartData, SeriesDataPoint } from "@/constants/dataset/dataset.types"
 import { ChartTooltip } from "./ChartTooltip"
 import { formatValue } from "@/lib/format"
 

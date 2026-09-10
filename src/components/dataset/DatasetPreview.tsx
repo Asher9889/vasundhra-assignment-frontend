@@ -1,11 +1,12 @@
 import { Badge } from "@/components/ui/badge"
 import { VisualizationRenderer } from "@/components/visualization/VisualizationRenderer"
-import type { ChartData, DatasetTemplate } from "@/types"
+import { CHART_TYPE, DATASET_TEMPLATE } from "@/constants/dataset/dataset.constants"
+import type { ChartData, DatasetTemplate, Domain, TimeseriesChartType } from "@/constants/dataset/dataset.types"
 import { chartTypeLabels, domainLabels, templateLabels } from "@/lib/format"
 
-export const previewTimeseries: Record<"line" | "bar" | "area", ChartData> = {
-  line: {
-    kind: "line",
+export const previewTimeseries: Record<TimeseriesChartType["value"], ChartData> = {
+  LINE: {
+    kind: CHART_TYPE.LINE,
     series: [
       {
         name: "Value",
@@ -22,8 +23,8 @@ export const previewTimeseries: Record<"line" | "bar" | "area", ChartData> = {
     xLabel: "Year",
     yLabel: "Value",
   },
-  bar: {
-    kind: "bar",
+  BAR: {
+    kind: CHART_TYPE.BAR,
     series: [
       {
         name: "Value",
@@ -40,8 +41,8 @@ export const previewTimeseries: Record<"line" | "bar" | "area", ChartData> = {
     xLabel: "Year",
     yLabel: "Value",
   },
-  area: {
-    kind: "area",
+  AREA: {
+    kind: CHART_TYPE.AREA,
     series: [
       {
         name: "Value",
@@ -61,7 +62,7 @@ export const previewTimeseries: Record<"line" | "bar" | "area", ChartData> = {
 }
 
 export const previewMapData: ChartData = {
-  kind: "india-map",
+  kind: CHART_TYPE.INDIA_MAP,
   points: [
     { id: "x1", name: "Sample Point A", latitude: 28.61, longitude: 77.2, value: 42, category: "Sample" },
     { id: "x2", name: "Sample Point B", latitude: 19.07, longitude: 72.87, value: 18, category: "Sample" },
@@ -71,7 +72,7 @@ export const previewMapData: ChartData = {
 }
 
 export const previewHeatmapData: ChartData = {
-  kind: "state-heatmap",
+  kind: CHART_TYPE.STATE_HEATMAP,
   states: [
     { state: "Rajasthan", value: 24 },
     { state: "Gujarat", value: 32 },
@@ -86,22 +87,26 @@ export const previewHeatmapData: ChartData = {
 
 interface DatasetPreviewProps {
   templateType: DatasetTemplate
-  timeseriesChartType: "line" | "bar" | "area"
+  timeseriesChartType: TimeseriesChartType["value"]
   title?: string
-  domain?: "climate" | "energy" | "power"
+  domain?: Domain
   height?: number
 }
 
 export function DatasetPreview({ templateType, timeseriesChartType, title, domain, height = 240 }: DatasetPreviewProps) {
   const data: ChartData =
-    templateType === "timeseries"
+    templateType === DATASET_TEMPLATE.TIMESERIES
       ? previewTimeseries[timeseriesChartType]
-      : templateType === "statewise"
+      : templateType === DATASET_TEMPLATE.STATEWISE
         ? previewHeatmapData
         : previewMapData
 
   const chartType =
-    templateType === "timeseries" ? timeseriesChartType : templateType === "statewise" ? "state-heatmap" : "india-map"
+    templateType === DATASET_TEMPLATE.TIMESERIES
+      ? timeseriesChartType
+      : templateType === DATASET_TEMPLATE.STATEWISE
+        ? CHART_TYPE.STATE_HEATMAP
+        : CHART_TYPE.INDIA_MAP
 
   return (
     <div className="space-y-3">

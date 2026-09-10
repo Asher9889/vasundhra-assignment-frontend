@@ -1,3 +1,4 @@
+import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
 import { Hero } from "@/features/home/Hero"
 import { VisualizationsSection } from "@/features/home/VisualizationsSection"
 import { WorkflowSection } from "@/features/home/WorkflowSection"
@@ -5,7 +6,7 @@ import { useMockDatasets } from "@/lib/dataset-store"
 
 export default function HomePage() {
   const datasets = useMockDatasets()
-    .filter((d) => d.status === "approved")
+    .filter((d) => d.status === APPROVAL_STATUS.APPROVED)
     .map((dataset) => ({ dataset }))
 
   return (

@@ -1,4 +1,4 @@
-import type { ApprovalStatus, ChartType, DatasetTemplate, Domain } from "@/types"
+import type { ApprovalStatus, ChartType, DatasetTemplate, Domain } from "@/constants/dataset/dataset.types"
 
 export function formatDate(iso?: string): string {
   if (!iso) return "—"
@@ -32,29 +32,29 @@ export function formatValue(value: number): string {
 }
 
 export const domainLabels: Record<Domain, string> = {
-  climate: "Climate",
-  energy: "Energy",
-  power: "Power",
+  CLIMATE: "Climate",
+  ENERGY: "Energy",
+  POWER: "Power",
 }
 
 export const chartTypeLabels: Record<ChartType, string> = {
-  line: "Line Chart",
-  bar: "Bar Chart",
-  area: "Area Chart",
-  "india-map": "India Map",
-  "state-heatmap": "State Heatmap",
+  LINE: "Line Chart",
+  BAR: "Bar Chart",
+  AREA: "Area Chart",
+  INDIA_MAP: "India Map",
+  STATE_HEATMAP: "State Heatmap",
 }
 
 export const templateLabels: Record<DatasetTemplate, string> = {
-  latlon: "Latitude / Longitude",
-  statewise: "State-wise",
-  timeseries: "Time-series",
+  LATLON: "Latitude / Longitude",
+  STATEWISE: "State-wise",
+  TIMESERIES: "Time-series",
 }
 
 export const approvalLabels: Record<ApprovalStatus, string> = {
-  pending: "Pending",
-  approved: "Approved",
-  rejected: "Rejected",
+  PENDING: "Pending",
+  APPROVED: "Approved",
+  REJECTED: "Rejected",
 }
 
 export function initials(name?: string): string {

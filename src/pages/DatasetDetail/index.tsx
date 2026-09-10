@@ -17,7 +17,8 @@ import { DatasetReview } from "@/components/dataset/DatasetReview"
 import { EmptyState } from "@/components/common/EmptyState"
 import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
 import { rejectionReasons } from "@/mock/csv-validation"
-import type { Dataset } from "@/types"
+import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 
 type DialogKind = "approve" | "reject" | "delete" | null
 
@@ -50,9 +51,9 @@ export default function DatasetDetailPage() {
     setSubmitting(true)
     window.setTimeout(() => {
       updateMockDatasets((cur) =>
-        cur.map((d) => (d.id === current.id ? { ...d, status: "approved", approvedAt: new Date().toISOString() } : d))
+        cur.map((d) => (d.id === current.id ? { ...d, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() } : d))
       )
-      setDataset((cur) => (cur ? { ...cur, status: "approved", approvedAt: new Date().toISOString() } : cur))
+      setDataset((cur) => (cur ? { ...cur, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() } : cur))
       setSubmitting(false)
       setDialog(null)
       toast.success(`"${current.title}" approved and published.`)
@@ -64,9 +65,9 @@ export default function DatasetDetailPage() {
     setSubmitting(true)
     window.setTimeout(() => {
       updateMockDatasets((cur) =>
-        cur.map((d) => (d.id === current.id ? { ...d, status: "rejected", rejectionReason: reason.trim() } : d))
+        cur.map((d) => (d.id === current.id ? { ...d, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : d))
       )
-      setDataset((cur) => (cur ? { ...cur, status: "rejected", rejectionReason: reason.trim() } : cur))
+      setDataset((cur) => (cur ? { ...cur, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : cur))
       setSubmitting(false)
       setDialog(null)
       setReason("")
@@ -115,10 +116,10 @@ export default function DatasetDetailPage() {
         </Button>
         <Button
           onClick={() => setDialog("approve")}
-          disabled={dataset.status === "approved"}
+          disabled={dataset.status === APPROVAL_STATUS.APPROVED}
           className="min-w-36"
         >
-          {dataset.status === "approved" ? "Approved" : "Approve"}
+          {dataset.status === APPROVAL_STATUS.APPROVED ? "Approved" : "Approve"}
         </Button>
       </div>
 

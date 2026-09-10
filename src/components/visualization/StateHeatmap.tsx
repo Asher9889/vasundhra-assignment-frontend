@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import indiaMap from "@svg-maps/india"
-import type { ChartData } from "@/types"
+import type { ChartData } from "@/constants/dataset/dataset.types"
 import { formatNumber } from "@/lib/format"
 
 const COLOR_STOPS = [

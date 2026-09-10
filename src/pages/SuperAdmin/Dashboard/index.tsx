@@ -19,7 +19,8 @@ import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTa
 import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
 import { getAdminSummaryStats, getDatasetSummaryStats } from "@/mock/dashboard"
 import { rejectionReasons } from "@/mock/csv-validation"
-import type { Dataset } from "@/types"
+import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 
 type DialogKind = "approve" | "reject" | "delete" | null
 
@@ -64,7 +65,7 @@ export default function SuperAdminDashboard() {
       updateMockDatasets((cur) =>
         cur.map((d) =>
           d.id === target.id
-            ? { ...d, status: "approved", approvedAt: new Date().toISOString() }
+            ? { ...d, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() }
             : d
         )
       )
@@ -80,7 +81,7 @@ export default function SuperAdminDashboard() {
     if (!reason.trim()) return
     setSubmitting(true)
     window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: "rejected", rejectionReason: reason.trim() } : d)))
+      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : d)))
       setSubmitting(false)
       setDialog(null)
       setTarget(null)

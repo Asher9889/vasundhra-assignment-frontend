@@ -8,7 +8,8 @@ import {
   X,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import type { CSVValidationResult } from "@/types/dataset-form"
+import { DATASET_UPLOAD_PHASE } from "@/constants/dataset/dataset.constants"
+import type { CSVValidationResult } from "@/features/add-dataset/types/add-dataset.types"
 import { cn } from "@/lib/utils"
 
 interface DatasetUploadProps {
@@ -114,26 +115,26 @@ export function DatasetUpload({ value, onChange, validation, disabled }: Dataset
         <div
           className={cn(
             "flex items-start gap-2 rounded-lg border p-3 text-xs",
-            validation.state === "valid" && "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
-            validation.state === "invalid" && "border-destructive/40 bg-destructive/10 text-destructive",
-            validation.state === "uploading" && "border-border bg-muted/40 text-muted-foreground",
-            validation.state === "idle" && "border-border bg-muted/40 text-muted-foreground"
+            validation.state === DATASET_UPLOAD_PHASE.VALID && "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+            validation.state === DATASET_UPLOAD_PHASE.INVALID && "border-destructive/40 bg-destructive/10 text-destructive",
+            validation.state === DATASET_UPLOAD_PHASE.UPLOADING && "border-border bg-muted/40 text-muted-foreground",
+            validation.state === DATASET_UPLOAD_PHASE.IDLE && "border-border bg-muted/40 text-muted-foreground"
           )}
           role="status"
           aria-live="polite"
         >
-          {validation.state === "uploading" && <Loader2 className="mt-0.5 size-3.5 animate-spin shrink-0" />}
-          {(validation.state === "valid" || validation.state === "idle") && (
+          {validation.state === DATASET_UPLOAD_PHASE.UPLOADING && <Loader2 className="mt-0.5 size-3.5 animate-spin shrink-0" />}
+          {(validation.state === DATASET_UPLOAD_PHASE.VALID || validation.state === DATASET_UPLOAD_PHASE.IDLE) && (
             <CheckCircle2 className="mt-0.5 size-3.5 shrink-0" />
           )}
-          {validation.state === "invalid" && <AlertCircle className="mt-0.5 size-3.5 shrink-0" />}
+          {validation.state === DATASET_UPLOAD_PHASE.INVALID && <AlertCircle className="mt-0.5 size-3.5 shrink-0" />}
 
           <div className="space-y-1">
-            {validation.state === "uploading" && <p className="font-medium">Validating dataset…</p>}
-            {validation.state === "valid" && (
+            {validation.state === DATASET_UPLOAD_PHASE.UPLOADING && <p className="font-medium">Validating dataset…</p>}
+            {validation.state === DATASET_UPLOAD_PHASE.VALID && (
               <p className="font-medium">Dataset structure is valid</p>
             )}
-            {validation.state === "invalid" && (
+            {validation.state === DATASET_UPLOAD_PHASE.INVALID && (
               <>
                 <p className="font-medium">Dataset validation failed</p>
                 <ul className="list-inside list-disc space-y-0.5 text-[11px] opacity-90">
@@ -143,8 +144,8 @@ export function DatasetUpload({ value, onChange, validation, disabled }: Dataset
                 </ul>
               </>
             )}
-            {validation.state === "idle" && <p className="font-medium">No file selected</p>}
-            {validation.state !== "invalid" && validation.rowCount != null && (
+            {validation.state === DATASET_UPLOAD_PHASE.IDLE && <p className="font-medium">No file selected</p>}
+            {validation.state !== DATASET_UPLOAD_PHASE.INVALID && validation.rowCount != null && (
               <p className="opacity-80">{validation.rowCount} rows detected</p>
             )}
           </div>

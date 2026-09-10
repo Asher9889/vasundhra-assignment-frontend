@@ -1,4 +1,5 @@
-import type { ChartData } from "@/types"
+import { CHART_TYPE } from "@/constants/dataset/dataset.constants"
+import type { ChartData } from "@/constants/dataset/dataset.types"
 import { LineChart } from "./LineChart"
 import { BarChart } from "./BarChart"
 import { AreaChart } from "./AreaChart"
@@ -12,15 +13,15 @@ interface VisualizationRendererProps {
 
 export function VisualizationRenderer({ data, height }: VisualizationRendererProps) {
   switch (data.kind) {
-    case "line":
+    case CHART_TYPE.LINE:
       return <LineChart data={data} height={height} />
-    case "bar":
+    case CHART_TYPE.BAR:
       return <BarChart data={data} height={height} />
-    case "area":
+    case CHART_TYPE.AREA:
       return <AreaChart data={data} height={height} />
-    case "india-map":
+    case CHART_TYPE.INDIA_MAP:
       return <IndiaMap data={data} height={height} />
-    case "state-heatmap":
+    case CHART_TYPE.STATE_HEATMAP:
       return <StateHeatmap data={data} height={height} />
     default:
       return (

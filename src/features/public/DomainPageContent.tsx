@@ -2,7 +2,8 @@ import { PageHeader } from "@/components/common/PageHeader"
 import { EmptyState } from "@/components/common/EmptyState"
 import { VisualizationCard } from "@/components/visualization/VisualizationCard"
 import { useMockDatasets } from "@/lib/dataset-store"
-import type { Domain } from "@/types"
+import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
+import type { Domain } from "@/constants/dataset/dataset.types"
 import { domainLabels } from "@/lib/format"
 
 interface DomainPageContentProps {
@@ -11,7 +12,9 @@ interface DomainPageContentProps {
 }
 
 export function DomainPageContent({ domain, description }: DomainPageContentProps) {
-  const datasets = useMockDatasets().filter((d) => d.domain === domain && d.status === "approved")
+  const datasets = useMockDatasets().filter(
+    (d) => d.domain === domain && d.status === APPROVAL_STATUS.APPROVED
+  )
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom"
 import { ShieldAlert } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 import { Button } from "@/components/ui/button"
-import type { UserRole } from "@/types/route.type"
+import type { TUserRole } from "@/constants/user/user.types"
 
 interface RoleGuardProps {
-  roles: UserRole[]
+  roles: TUserRole[]
   children: ReactNode
 }
 

@@ -1,13 +1,14 @@
-import type { CSVValidationError, CSVValidationResult } from "@/types/dataset-form"
+import { DATASET_TEMPLATE, DATASET_UPLOAD_PHASE } from "@/constants/dataset/dataset.constants"
+import type { CSVValidationError, CSVValidationResult } from "@/features/add-dataset/types/add-dataset.types"
 
 export const initialValidationState: CSVValidationResult = {
-  state: "idle",
+  state: DATASET_UPLOAD_PHASE.IDLE,
   errors: [],
 }
 
 export function mockValidateCsv(fileName?: string): CSVValidationResult {
   return {
-    state: "valid",
+    state: DATASET_UPLOAD_PHASE.VALID,
     errors: [],
     fileName,
     rowCount: 128,
@@ -33,7 +34,7 @@ export const rejectionReasons = [
 
 export const columnGuides = [
   {
-    templateType: "latlon",
+    templateType: DATASET_TEMPLATE.LATLON,
     columns: [
       { name: "latitude", description: "Decimal latitude, e.g. 28.6139" },
       { name: "longitude", description: "Decimal longitude, e.g. 77.2090" },
@@ -42,7 +43,7 @@ export const columnGuides = [
     example: { latitude: "28.6139", longitude: "77.2090", value: "2050" },
   },
   {
-    templateType: "statewise",
+    templateType: DATASET_TEMPLATE.STATEWISE,
     columns: [
       { name: "state", description: "State or union territory name, e.g. Rajasthan" },
       { name: "value", description: "Numeric value for the state" },
@@ -50,7 +51,7 @@ export const columnGuides = [
     example: { state: "Rajasthan", value: "18350" },
   },
   {
-    templateType: "timeseries",
+    templateType: DATASET_TEMPLATE.TIMESERIES,
     columns: [
       { name: "date", description: "Date or year, e.g. 2024 or 2024-01-01" },
       { name: "value", description: "Numeric value at that point in time" },

@@ -3,7 +3,8 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { DatasetStatusBadge } from "./DatasetStatusBadge"
 import { VisualizationRenderer } from "@/components/visualization/VisualizationRenderer"
-import type { Dataset } from "@/types"
+import { DATASET_TEMPLATE } from "@/constants/dataset/dataset.constants"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 import { chartTypeLabels, domainLabels, formatDateTime, templateLabels } from "@/lib/format"
 
 interface DatasetReviewProps {
@@ -89,20 +90,20 @@ export function DatasetReview({ dataset }: DatasetReviewProps) {
             <thead className="border-b bg-muted/40">
               <tr>
                 <th className="px-3 py-2 font-medium text-foreground">Row</th>
-                {dataset.templateType === "latlon" && (
+                {dataset.templateType === DATASET_TEMPLATE.LATLON && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">Latitude</th>
                     <th className="px-3 py-2 font-medium text-foreground">Longitude</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
                   </>
                 )}
-                {dataset.templateType === "statewise" && (
+                {dataset.templateType === DATASET_TEMPLATE.STATEWISE && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">State</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
                   </>
                 )}
-                {dataset.templateType === "timeseries" && (
+                {dataset.templateType === DATASET_TEMPLATE.TIMESERIES && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">Date / Year</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
@@ -115,12 +116,12 @@ export function DatasetReview({ dataset }: DatasetReviewProps) {
                 <tr key={i} className="border-b last:border-0">
                   <td className="px-3 py-1.5">{i + 1}</td>
                   <td className="px-3 py-1.5">
-                    {dataset.templateType === "timeseries" ? 2005 + i : dataset.templateType === "latlon" ? `28.6${i}` : "Rajasthan"}
+                    {dataset.templateType === DATASET_TEMPLATE.TIMESERIES ? 2005 + i : dataset.templateType === DATASET_TEMPLATE.LATLON ? `28.6${i}` : "Rajasthan"}
                   </td>
                   <td className="px-3 py-1.5">
-                    {dataset.templateType === "latlon" ? `77.2${i}` : 24 + i * 3}
+                    {dataset.templateType === DATASET_TEMPLATE.LATLON ? `77.2${i}` : 24 + i * 3}
                   </td>
-                  {dataset.templateType === "latlon" && <td className="px-3 py-1.5">{18 + i * 4}</td>}
+                  {dataset.templateType === DATASET_TEMPLATE.LATLON && <td className="px-3 py-1.5">{18 + i * 4}</td>}
                 </tr>
               ))}
             </tbody>

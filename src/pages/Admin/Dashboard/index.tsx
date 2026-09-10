@@ -17,7 +17,7 @@ import {
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
 import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
 import { getDatasetSummaryStats } from "@/mock/dashboard"
-import type { Dataset } from "@/types"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 
 export default function AdminDashboardPage() {
   const datasets = useMockDatasets()

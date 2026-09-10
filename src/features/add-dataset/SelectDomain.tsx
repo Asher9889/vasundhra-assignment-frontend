@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { Domain } from "@/types"
+import { DOMAIN } from "@/constants/dataset/dataset.constants"
+import type { Domain } from "@/constants/dataset/dataset.types"
 import { domainLabels } from "@/lib/format"
 
 interface SelectDomainProps {
@@ -34,7 +35,7 @@ export function SelectDomain({ value, onChange, id }: SelectDomainProps) {
         <SelectValue placeholder="Select a domain" />
       </SelectTrigger>
       <SelectContent>
-        {(["climate", "energy", "power"] as const).map((d) => (
+        {Object.values(DOMAIN).map((d) => (
           <SelectItem className="cursor-pointer" key={d} value={d}>
             {domainLabels[d]}
           </SelectItem>

@@ -1,3 +1,5 @@
+import { APPROVAL_STATUS, DOMAIN } from "@/constants/dataset/dataset.constants"
+import { ACCOUNT_STATUS } from "@/constants/user/user.constant"
 import { mockAdmins } from "./admins"
 import { mockDatasets } from "./datasets"
 
@@ -18,13 +20,13 @@ export interface AdminSummaryStats {
 export function getDatasetSummaryStats(datasets = mockDatasets): DatasetSummaryStats {
   return {
     total: datasets.length,
-    pending: datasets.filter((d) => d.status === "pending").length,
-    approved: datasets.filter((d) => d.status === "approved").length,
-    rejected: datasets.filter((d) => d.status === "rejected").length,
+    pending: datasets.filter((d) => d.status === APPROVAL_STATUS.PENDING).length,
+    approved: datasets.filter((d) => d.status === APPROVAL_STATUS.APPROVED).length,
+    rejected: datasets.filter((d) => d.status === APPROVAL_STATUS.REJECTED).length,
     byDomain: {
-      climate: datasets.filter((d) => d.domain === "climate").length,
-      energy: datasets.filter((d) => d.domain === "energy").length,
-      power: datasets.filter((d) => d.domain === "power").length,
+      [DOMAIN.CLIMATE]: datasets.filter((d) => d.domain === DOMAIN.CLIMATE).length,
+      [DOMAIN.ENERGY]: datasets.filter((d) => d.domain === DOMAIN.ENERGY).length,
+      [DOMAIN.POWER]: datasets.filter((d) => d.domain === DOMAIN.POWER).length,
     },
   }
 }
@@ -32,13 +34,13 @@ export function getDatasetSummaryStats(datasets = mockDatasets): DatasetSummaryS
 export function getAdminSummaryStats(admins = mockAdmins): AdminSummaryStats {
   return {
     total: admins.length,
-    active: admins.filter((a) => a.status === "active").length,
-    inactive: admins.filter((a) => a.status === "inactive").length,
+    active: admins.filter((a) => a.status === ACCOUNT_STATUS.ACTIVE).length,
+    inactive: admins.filter((a) => a.status === ACCOUNT_STATUS.INACTIVE).length,
   }
 }
 
 export const domainLabels: Record<string, string> = {
-  climate: "Climate",
-  energy: "Energy",
-  power: "Power",
+  [DOMAIN.CLIMATE]: "Climate",
+  [DOMAIN.ENERGY]: "Energy",
+  [DOMAIN.POWER]: "Power",
 }

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, CalendarDays } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import type { Dataset } from "@/types"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 import { VisualizationRenderer } from "./VisualizationRenderer"
 import { chartTypeLabels, domainLabels, formatDate } from "@/lib/format"
 import { cn } from "@/lib/utils"

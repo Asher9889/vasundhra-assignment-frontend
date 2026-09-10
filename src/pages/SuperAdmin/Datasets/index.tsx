@@ -16,10 +16,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import {
+  APPROVAL_STATUS,
+} from "@/constants/dataset/dataset.constants"
+import type { ApprovalStatus, Dataset } from "@/constants/dataset/dataset.types"
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
 import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
 import { rejectionReasons } from "@/mock/csv-validation"
-import type { ApprovalStatus, Dataset } from "@/types"
 
 type DialogKind = "approve" | "reject" | "delete" | null
 
@@ -36,9 +39,9 @@ export default function SuperAdminDatasetsPage() {
   const counts = useMemo(
     () => ({
       all: datasets.length,
-      pending: datasets.filter((d) => d.status === "pending").length,
-      approved: datasets.filter((d) => d.status === "approved").length,
-      rejected: datasets.filter((d) => d.status === "rejected").length,
+      pending: datasets.filter((d) => d.status === APPROVAL_STATUS.PENDING).length,
+      approved: datasets.filter((d) => d.status === APPROVAL_STATUS.APPROVED).length,
+      rejected: datasets.filter((d) => d.status === APPROVAL_STATUS.REJECTED).length,
     }),
     [datasets]
   )
@@ -48,7 +51,7 @@ export default function SuperAdminDatasetsPage() {
     const matchesSearch =
       d.title.toLowerCase().includes(search.toLowerCase()) ||
       d.uploadedBy.toLowerCase().includes(search.toLowerCase()) ||
-      d.domain.includes(search.toLowerCase())
+      d.domain.toLowerCase().includes(search.toLowerCase())
     return matchesTab && matchesSearch
   })
 
@@ -73,7 +76,7 @@ export default function SuperAdminDatasetsPage() {
     if (!target) return
     setSubmitting(true)
     window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: "approved", approvedAt: new Date().toISOString() } : d)))
+      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() } : d)))
       setSubmitting(false)
       setDialog(null)
       setTarget(null)
@@ -85,7 +88,7 @@ export default function SuperAdminDatasetsPage() {
     if (!target || !reason.trim()) return
     setSubmitting(true)
     window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: "rejected", rejectionReason: reason.trim() } : d)))
+      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : d)))
       setSubmitting(false)
       setDialog(null)
       setTarget(null)
@@ -117,9 +120,9 @@ export default function SuperAdminDatasetsPage() {
         <Tabs value={tab} onValueChange={(v) => setTab(v as ApprovalStatus | "all")} className="w-full sm:w-auto">
           <TabsList className="w-full sm:w-auto">
             <TabsTrigger value="all">All ({counts.all})</TabsTrigger>
-            <TabsTrigger value="pending">Pending ({counts.pending})</TabsTrigger>
-            <TabsTrigger value="approved">Approved ({counts.approved})</TabsTrigger>
-            <TabsTrigger value="rejected">Rejected ({counts.rejected})</TabsTrigger>
+            <TabsTrigger value={APPROVAL_STATUS.PENDING}>Pending ({counts.pending})</TabsTrigger>
+            <TabsTrigger value={APPROVAL_STATUS.APPROVED}>Approved ({counts.approved})</TabsTrigger>
+            <TabsTrigger value={APPROVAL_STATUS.REJECTED}>Rejected ({counts.rejected})</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="relative ml-auto w-full sm:w-64">

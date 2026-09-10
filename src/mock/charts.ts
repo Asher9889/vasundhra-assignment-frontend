@@ -1,7 +1,8 @@
-import type { ChartData } from "@/types"
+import { CHART_TYPE } from "@/constants/dataset/dataset.constants"
+import type { ChartData } from "@/constants/dataset/dataset.types"
 
 export const temperatureTrendData: ChartData = {
-  kind: "line",
+  kind: CHART_TYPE.LINE,
   series: [
     {
       name: "Annual Mean Temperature",
@@ -38,7 +39,7 @@ export const temperatureTrendData: ChartData = {
 }
 
 export const climateMapData: ChartData = {
-  kind: "india-map",
+  kind: CHART_TYPE.INDIA_MAP,
   points: [
     { id: "c1", name: "IMD Mumbai Observatory", latitude: 19.076, longitude: 72.8777, value: 27.1, category: "Weather Station" },
     { id: "c2", name: "IMD Delhi Observatory", latitude: 28.6139, longitude: 77.209, value: 25.9, category: "Weather Station" },
@@ -53,7 +54,7 @@ export const climateMapData: ChartData = {
 }
 
 export const climateChartData: ChartData = {
-  kind: "bar",
+  kind: CHART_TYPE.BAR,
   series: [
     {
       name: "Annual Rainfall (mm)",
@@ -77,7 +78,7 @@ export const climateChartData: ChartData = {
 }
 
 export const renewableCapacityData: ChartData = {
-  kind: "state-heatmap",
+  kind: CHART_TYPE.STATE_HEATMAP,
   states: [
     { state: "Rajasthan", value: 18350 },
     { state: "Gujarat", value: 24200 },
@@ -106,7 +107,7 @@ export const renewableCapacityData: ChartData = {
 }
 
 export const renewableLocationsData: ChartData = {
-  kind: "india-map",
+  kind: CHART_TYPE.INDIA_MAP,
   points: [
     { id: "p1", name: "Pavagada Solar Park", latitude: 14.17, longitude: 77.28, value: 2050, category: "Solar" },
     { id: "p2", name: "Bhadla Solar Park", latitude: 27.5, longitude: 72.9, value: 2245, category: "Solar" },
@@ -125,7 +126,7 @@ export const renewableLocationsData: ChartData = {
 }
 
 export const powerGenerationTrendData: ChartData = {
-  kind: "bar",
+  kind: CHART_TYPE.BAR,
   series: [
     {
       name: "Annual Generation (TWh)",
@@ -149,7 +150,7 @@ export const powerGenerationTrendData: ChartData = {
 }
 
 export const powerSourceMixData: ChartData = {
-  kind: "area",
+  kind: CHART_TYPE.AREA,
   series: [
     {
       name: "Coal",
@@ -203,7 +204,7 @@ export const powerSourceMixData: ChartData = {
 }
 
 export const powerPeakDemandData: ChartData = {
-  kind: "line",
+  kind: CHART_TYPE.LINE,
   series: [
     {
       name: "Peak Demand (GW)",

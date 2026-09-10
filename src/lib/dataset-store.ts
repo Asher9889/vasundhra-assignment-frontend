@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { mockDatasets } from "@/mock/datasets"
-import type { Dataset } from "@/types"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 
 const STORAGE_KEY = "vasudha-demo-datasets-v1"
 

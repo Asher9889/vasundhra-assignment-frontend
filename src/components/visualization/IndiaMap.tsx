@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react"
 import { ZoomIn, ZoomOut, Maximize } from "lucide-react"
 import indiaMap from "@svg-maps/india"
-import type { ChartData } from "@/types"
+import type { ChartData } from "@/constants/dataset/dataset.types"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 

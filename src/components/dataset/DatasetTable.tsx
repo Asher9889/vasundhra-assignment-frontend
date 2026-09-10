@@ -27,7 +27,11 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { DatasetStatusBadge } from "./DatasetStatusBadge"
 import { EmptyState } from "@/components/common/EmptyState"
-import type { Dataset } from "@/types"
+import {
+  APPROVAL_STATUS,
+  DATASET_ACTIVE_STATUS,
+} from "@/constants/dataset/dataset.constants"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 import { chartTypeLabels, domainLabels, formatDate } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
@@ -119,11 +123,11 @@ export function DatasetTable({
                   <span
                     className={cn(
                       "inline-flex items-center gap-1 text-xs font-medium",
-                      dataset.activeStatus === "active" ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
+                      dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
                     )}
                   >
-                    <span className={cn("size-1.5 rounded-full", dataset.activeStatus === "active" ? "bg-emerald-500" : "bg-muted-foreground")} />
-                    {dataset.activeStatus === "active" ? "Active" : "Inactive"}
+                    <span className={cn("size-1.5 rounded-full", dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "bg-emerald-500" : "bg-muted-foreground")} />
+                    {dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "Active" : "Inactive"}
                   </span>
                 </TableCell>
               )}
@@ -156,13 +160,13 @@ export function DatasetTable({
                     {role === "super-admin" && (
                       <>
                         <DropdownMenuSeparator />
-                        {dataset.status !== "approved" && (
+                        {dataset.status !== APPROVAL_STATUS.APPROVED && (
                           <DropdownMenuItem onClick={() => onAction?.("approve", dataset)}>
                             <CheckCircle2 className="size-4" />
                             Approve
                           </DropdownMenuItem>
                         )}
-                        {dataset.status !== "rejected" && (
+                        {dataset.status !== APPROVAL_STATUS.REJECTED && (
                           <DropdownMenuItem onClick={() => onAction?.("reject", dataset)} variant="destructive">
                             <XCircle className="size-4" />
                             Reject
