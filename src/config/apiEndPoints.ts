@@ -30,9 +30,13 @@ const apiEndPoints = {
     },
     datasets: {
         upload: {
-            url: "/datasets",
+            url: "/datasets/upload",
             method: "POST"
         },
+        create: {
+            url: "/datasets",
+            method: "POST"
+        }
     },
 }    
 

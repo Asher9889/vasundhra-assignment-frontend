@@ -1,17 +1,13 @@
 import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { addMockDataset } from "@/lib/dataset-store"
+import { useAuth } from "@/hooks/useAuth"
 import {
-  APPROVAL_STATUS,
   CHART_TYPE,
-  DATASET_ACTIVE_STATUS,
   DATASET_TEMPLATE,
   DATASET_UPLOAD_PHASE,
 } from "@/constants/dataset/dataset.constants"
-import type { Dataset, DatasetTemplate, Domain } from "@/constants/dataset/dataset.types"
-import { SUBMIT_STATUS } from "@/constants/form/form.constants"
-import type { SubmitStatus } from "@/constants/form/form.types"
+import type { DatasetTemplate, Domain } from "@/constants/dataset/dataset.types"
 import { DatasetFileStep } from "./components/DatasetFileStep"
 import { SchemaTable } from "./components/SchemaTable"
 import { VisualizationConfig } from "./components/VisualizationConfig"
@@ -23,10 +19,12 @@ import { SuccessPanel } from "./components/SuccessPanel"
 import { suggestColumns } from "./csv"
 import { buildChartData } from "./chart-builder"
 import { useDatasetUpload } from "./hooks/useDatasetUpload"
-import type { SeriesType } from "./types/add-dataset.types"
+import { useCreateDataset } from "./hooks/useCreateDataset"
+import type { CreateDatasetVisualizationConfig, SeriesType } from "./types/add-dataset.types"
 
 export function AddDatasetForm() {
   const navigate = useNavigate()
+  const { user } = useAuth()
 
   const [domain, setDomain] = useState<Domain | null>(null)
   const [templateType, setTemplateType] = useState<DatasetTemplate | null>(null)
@@ -39,8 +37,7 @@ export function AddDatasetForm() {
   const [title, setTitle] = useState("")
 
   const { file, phase, parsedData, errors, selectFile, reset: resetUpload } = useDatasetUpload()
-
-  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(SUBMIT_STATUS.IDLE)
+  const { createDataset, isPending: isCreating, isSuccess, data: creationResult, reset: resetCreation } = useCreateDataset()
 
   const chartData = useMemo(() => parsedData ? buildChartData({
     parsed: parsedData,
@@ -71,10 +68,12 @@ export function AddDatasetForm() {
     Boolean(templateType) &&
     configComplete &&
     title.trim().length > 0 &&
-    submitStatus !== SUBMIT_STATUS.SUBMITTING
+    Boolean(user?.id) &&
+    !isCreating
 
   function resetForm() {
     resetUpload()
+    resetCreation()
     setDomain(null)
     setTemplateType(null)
     setSeriesType(CHART_TYPE.LINE)
@@ -84,7 +83,6 @@ export function AddDatasetForm() {
     setLatitudeColumn("")
     setLongitudeColumn("")
     setTitle("")
-    setSubmitStatus(SUBMIT_STATUS.IDLE)
   }
 
   function handleFileChange(next: File | null) {
@@ -122,39 +120,58 @@ export function AddDatasetForm() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!canSubmit || !parsedData || !domain || !templateType || !chartData) return
+    if (!canSubmit || !parsedData || !domain || !templateType || !user) return
 
-    setSubmitStatus(SUBMIT_STATUS.SUBMITTING)
-    window.setTimeout(() => {
-      const chartType: Dataset["chartType"] =
-        templateType === DATASET_TEMPLATE.TIME_SERIES
-          ? seriesType
-          : templateType === DATASET_TEMPLATE.STATE_WISE
-            ? CHART_TYPE.STATE_HEATMAP
-            : CHART_TYPE.INDIA_MAP
-      const newDataset: Dataset = {
-        id: `ds-${Date.now()}`,
+    const chartType =
+      templateType === DATASET_TEMPLATE.TIME_SERIES
+        ? seriesType
+        : templateType === DATASET_TEMPLATE.STATE_WISE
+          ? CHART_TYPE.STATE_HEATMAP
+          : CHART_TYPE.INDIA_MAP
+
+    const visualizationConfig: CreateDatasetVisualizationConfig = {}
+    if (templateType === DATASET_TEMPLATE.TIME_SERIES) {
+      visualizationConfig.xAxisColumn = xColumn
+      visualizationConfig.valueColumn = valueColumn
+    } else if (templateType === DATASET_TEMPLATE.STATE_WISE) {
+      visualizationConfig.stateColumn = stateColumn
+      visualizationConfig.valueColumn = valueColumn
+    } else if (templateType === DATASET_TEMPLATE.LAT_LONG) {
+      visualizationConfig.latitudeColumn = latitudeColumn
+      visualizationConfig.longitudeColumn = longitudeColumn
+      visualizationConfig.valueColumn = valueColumn
+    }
+
+    createDataset(
+      {
+        fileKey: parsedData.fileKey,
         title: title.trim(),
-        description: "Submitted from the Add Dataset workflow. Awaiting review.",
         domain,
-        chartType,
         templateType,
-        data: chartData,
-        uploadedBy: "admin@vasudha.org",
-        uploadedById: "adm-001",
-        status: APPROVAL_STATUS.PENDING,
-        activeStatus: DATASET_ACTIVE_STATUS.ACTIVE,
-        fileName: file?.name ?? "dataset.csv",
-        rowCount: parsedData.rowCount,
-        createdAt: new Date().toISOString(),
+        chartType,
+        uploadedBy: user.id,
+        file: {
+          originalName: file?.name ?? "dataset.csv",
+          mimeType: file?.type ?? "text/csv",
+          size: file?.size ?? 0,
+        },
+        csvSchema: { columns: parsedData.columns },
+        visualizationConfig,
+        rowCount: parsedData.validCount,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Dataset submitted for Super Admin approval.")
+        },
+        onError: (error: unknown) => {
+          const message = error instanceof Error ? error.message : "Failed to submit dataset. Please try again."
+          toast.error(message)
+        },
       }
-      addMockDataset(newDataset)
-      setSubmitStatus(SUBMIT_STATUS.SUCCESS)
-      toast.success("Dataset submitted for Super Admin approval.")
-    }, 900)
+    )
   }
 
-  if (submitStatus === SUBMIT_STATUS.SUCCESS) {
+  if (isSuccess && creationResult) {
     return <SuccessPanel title={title.trim()} onBackToDashboard={() => navigate("/admin")} />
   }
 
@@ -200,7 +217,7 @@ export function AddDatasetForm() {
 
           <SubmitPanel
             canSubmit={canSubmit}
-            isSubmitting={submitStatus === SUBMIT_STATUS.SUBMITTING}
+            isSubmitting={isCreating}
             onCancel={resetForm}
           />
         </>
