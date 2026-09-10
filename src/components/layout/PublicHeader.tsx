@@ -4,6 +4,10 @@ import { Menu, X } from "lucide-react"
 import { Logo } from "@/components/common/Logo"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/hooks/useAuth"
+import { USER_ROLE } from "@/constants/user/user.constant"
+import { AUTH_STATUS } from "@/constants/auth/auth.constants"
+import type { TUserRole } from "@/constants/user/user.types"
 
 const navItems = [
   { label: "Climate", to: "/climate" },
@@ -12,8 +16,16 @@ const navItems = [
   { label: "About", to: "/about" },
 ]
 
+const HOME_PATH: Record<TUserRole, string> = {
+  [USER_ROLE.SUPER_ADMIN]: "/super-admin",
+  [USER_ROLE.ADMIN]: "/admin",
+}
+
 export function PublicHeader() {
   const [open, setOpen] = useState(false)
+  const { user, status } = useAuth()
+
+  const checking = status === AUTH_STATUS.CHECKING
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -42,9 +54,15 @@ export function PublicHeader() {
         </nav>
 
         <div className="hidden md:block">
-          <Button variant="outline" className="text-sm" render={<Link to="/login" />}>
-            Login
-          </Button>
+          {user ? (
+            <Button variant="outline" className="text-sm" render={<Link to={HOME_PATH[user.role] ?? "/"} />}>
+              {user.email}
+            </Button>
+          ) : (
+            <Button variant="outline" className="text-sm" render={<Link to="/login" />}>
+              {checking ? "…" : "Login"}
+            </Button>
+          )}
         </div>
 
         <Button
@@ -78,9 +96,19 @@ export function PublicHeader() {
               </NavLink>
             ))}
             <div className="mt-2 border-t pt-3">
-              <Button variant="outline" className="w-full" render={<Link to="/login" />}>
-                Login
-              </Button>
+              {user ? (
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  render={<Link to={HOME_PATH[user.role] ?? "/"} onClick={() => setOpen(false)} />}
+                >
+                  {user.email}
+                </Button>
+              ) : (
+                <Button variant="outline" className="w-full" render={<Link to="/login" onClick={() => setOpen(false)} />}>
+                  {checking ? "…" : "Login"}
+                </Button>
+              )}
             </div>
           </nav>
         </div>
