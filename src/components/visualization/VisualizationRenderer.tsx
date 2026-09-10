@@ -7,11 +7,19 @@ import { IndiaMap } from "./IndiaMap"
 import { StateHeatmap } from "./StateHeatmap"
 
 interface VisualizationRendererProps {
-  data: ChartData
+  data?: ChartData
   height?: number
 }
 
 export function VisualizationRenderer({ data, height }: VisualizationRendererProps) {
+  if (!data) {
+    return (
+      <div className="flex h-full min-h-40 items-center justify-center text-sm text-muted-foreground">
+        No chart data available
+      </div>
+    )
+  }
+
   switch (data.kind) {
     case CHART_TYPE.LINE:
       return <LineChart data={data} height={height} />

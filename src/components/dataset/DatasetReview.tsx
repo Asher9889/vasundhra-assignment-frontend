@@ -5,10 +5,13 @@ import { DatasetStatusBadge } from "./DatasetStatusBadge"
 import { VisualizationRenderer } from "@/components/visualization/VisualizationRenderer"
 import { DATASET_TEMPLATE } from "@/constants/dataset/dataset.constants"
 import type { Dataset } from "@/constants/dataset/dataset.types"
+import type { DatasetApiRow, DatasetColumn } from "@/features/datasets/types/datasets.types"
 import { chartTypeLabels, domainLabels, formatDateTime, templateLabels } from "@/lib/format"
 
 interface DatasetReviewProps {
   dataset: Dataset
+  rows?: DatasetApiRow[]
+  columns?: DatasetColumn[]
 }
 
 function MetaItem({ label, value }: { label: string; value: string }) {
@@ -20,7 +23,14 @@ function MetaItem({ label, value }: { label: string; value: string }) {
   )
 }
 
-export function DatasetReview({ dataset }: DatasetReviewProps) {
+function formatCell(value: string | number | Date | null): string {
+  if (value == null) return "—"
+  if (value instanceof Date) return value.toISOString().slice(0, 10)
+  return typeof value === "number" ? (Number.isInteger(value) ? String(value) : value.toFixed(2)) : String(value)
+}
+
+export function DatasetReview({ dataset, rows, columns }: DatasetReviewProps) {
+  const hasPreviewRows = Boolean(rows && columns && rows.length > 0 && columns.length > 0)
   return (
     <div className="grid gap-6 lg:grid-cols-5">
       <div className="space-y-4 lg:col-span-2">
@@ -90,20 +100,26 @@ export function DatasetReview({ dataset }: DatasetReviewProps) {
             <thead className="border-b bg-muted/40">
               <tr>
                 <th className="px-3 py-2 font-medium text-foreground">Row</th>
-                {dataset.templateType === DATASET_TEMPLATE.LAT_LONG && (
-                  <>
-                    <th className="px-3 py-2 font-medium text-foreground">Latitude</th>
-                    <th className="px-3 py-2 font-medium text-foreground">Longitude</th>
-                    <th className="px-3 py-2 font-medium text-foreground">Value</th>
-                  </>
-                )}
-                {dataset.templateType === DATASET_TEMPLATE.STATE_WISE && (
+                {hasPreviewRows
+                  ? columns!.map((column) => (
+                      <th key={column.name} className="px-3 py-2 whitespace-nowrap font-medium text-foreground">
+                        {column.name}
+                      </th>
+                    ))
+                  : dataset.templateType === DATASET_TEMPLATE.LAT_LONG && (
+                      <>
+                        <th className="px-3 py-2 font-medium text-foreground">Latitude</th>
+                        <th className="px-3 py-2 font-medium text-foreground">Longitude</th>
+                        <th className="px-3 py-2 font-medium text-foreground">Value</th>
+                      </>
+                    )}
+                {!hasPreviewRows && dataset.templateType === DATASET_TEMPLATE.STATE_WISE && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">State</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
                   </>
                 )}
-                {dataset.templateType === DATASET_TEMPLATE.TIME_SERIES && (
+                {!hasPreviewRows && dataset.templateType === DATASET_TEMPLATE.TIME_SERIES && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">Date / Year</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
@@ -112,18 +128,31 @@ export function DatasetReview({ dataset }: DatasetReviewProps) {
               </tr>
             </thead>
             <tbody className="text-muted-foreground">
-              {Array.from({ length: Math.min(dataset.rowCount ?? 0, 5) }).map((_, i) => (
-                <tr key={i} className="border-b last:border-0">
-                  <td className="px-3 py-1.5">{i + 1}</td>
-                  <td className="px-3 py-1.5">
-                    {dataset.templateType === DATASET_TEMPLATE.TIME_SERIES ? 2005 + i : dataset.templateType === DATASET_TEMPLATE.LAT_LONG ? `28.6${i}` : "Rajasthan"}
-                  </td>
-                  <td className="px-3 py-1.5">
-                    {dataset.templateType === DATASET_TEMPLATE.LAT_LONG ? `77.2${i}` : 24 + i * 3}
-                  </td>
-                  {dataset.templateType === DATASET_TEMPLATE.LAT_LONG && <td className="px-3 py-1.5">{18 + i * 4}</td>}
-                </tr>
-              ))}
+              {hasPreviewRows ? (
+                rows!.slice(0, 5).map((row) => (
+                  <tr key={row.rowIndex} className="border-b last:border-0">
+                    <td className="px-3 py-1.5">{row.rowIndex + 1}</td>
+                    {columns!.map((column) => (
+                      <td key={column.name} className="px-3 py-1.5 whitespace-nowrap">
+                        {formatCell(row.data[column.name])}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                Array.from({ length: Math.min(dataset.rowCount ?? 0, 5) }).map((_, i) => (
+                  <tr key={i} className="border-b last:border-0">
+                    <td className="px-3 py-1.5">{i + 1}</td>
+                    <td className="px-3 py-1.5">
+                      {dataset.templateType === DATASET_TEMPLATE.TIME_SERIES ? 2005 + i : dataset.templateType === DATASET_TEMPLATE.LAT_LONG ? `28.6${i}` : "Rajasthan"}
+                    </td>
+                    <td className="px-3 py-1.5">
+                      {dataset.templateType === DATASET_TEMPLATE.LAT_LONG ? `77.2${i}` : 24 + i * 3}
+                    </td>
+                    {dataset.templateType === DATASET_TEMPLATE.LAT_LONG && <td className="px-3 py-1.5">{18 + i * 4}</td>}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

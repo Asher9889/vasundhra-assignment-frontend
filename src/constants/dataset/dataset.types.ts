@@ -51,19 +51,19 @@ interface Dataset {
   domain: Domain;
   chartType: ChartType;
   templateType: DatasetTemplate;
-  data: ChartData;
+  data?: ChartData;
   uploadedBy: string;
   uploadedById?: string;
   status: ApprovalStatus;
-  activeStatus: DatasetActiveStatus;
+  activeStatus?: DatasetActiveStatus;
   rejectionReason?: string;
   fileName?: string;
   rowCount: number;
-  createdAt: Date;
-  
-  approvedBy: string| null;
-  approvedAt: Date | null;
-  publishedAt: Date | null
+  createdAt: string;
+
+  approvedBy?: string | null;
+  approvedAt?: string | null;
+  publishedAt?: string | null;
 }
 
 export type {

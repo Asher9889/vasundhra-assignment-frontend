@@ -29,6 +29,14 @@ const apiEndPoints = {
         }),
     },
     datasets: {
+        list: {
+            url: "/datasets",
+            method: "GET"
+        },
+        detail: (id: string) => ({
+            url: `/datasets/${id}`,
+            method: "GET"
+        }),
         upload: {
             url: "/datasets/upload",
             method: "POST"
@@ -36,7 +44,11 @@ const apiEndPoints = {
         create: {
             url: "/datasets",
             method: "POST"
-        }
+        },
+        updateStatus: (id: string) => ({
+            url: `/datasets/${id}/status`,
+            method: "PATCH"
+        }),
     },
 }    
 

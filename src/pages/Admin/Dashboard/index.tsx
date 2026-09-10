@@ -15,17 +15,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
-import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
+import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
+import { updateMockDatasets } from "@/lib/dataset-store"
 import { getDatasetSummaryStats } from "@/mock/dashboard"
 import type { Dataset } from "@/constants/dataset/dataset.types"
 
 export default function AdminDashboardPage() {
-  const datasets = useMockDatasets()
+  const { datasets, pagination, isPending } = useDatasetsQuery({ limit: 50 })
   const [search, setSearch] = useState("")
   const [deleteTarget, setDeleteTarget] = useState<Dataset | null>(null)
   const [deleting, setDeleting] = useState(false)
 
-  const stats = getDatasetSummaryStats(datasets)
+  const stats = { ...getDatasetSummaryStats(datasets), total: pagination?.total ?? datasets.length }
   const rows = datasets.filter((d) => d.title.toLowerCase().includes(search.toLowerCase()))
 
   function onAction(action: DatasetAction, dataset: Dataset) {
@@ -82,6 +83,7 @@ export default function AdminDashboardPage() {
         <DatasetTable
           datasets={rows}
           role="admin"
+          loading={isPending}
           onAction={onAction}
           detailHref={(d) => `/admin/datasets/${d.id}`}
           emptyTitle="No datasets yet"

@@ -16,7 +16,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
-import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
+import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
+import { useUpdateDatasetStatusMutation } from "@/features/datasets/hooks/useUpdateDatasetStatusMutation"
+import { updateMockDatasets } from "@/lib/dataset-store"
 import { getAdminSummaryStats, getDatasetSummaryStats } from "@/mock/dashboard"
 import { rejectionReasons } from "@/mock/csv-validation"
 import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
@@ -26,14 +28,15 @@ type DialogKind = "approve" | "reject" | "delete" | null
 
 export default function SuperAdminDashboard() {
   const navigate = useNavigate()
-  const datasets = useMockDatasets()
+  const { datasets, pagination, isPending } = useDatasetsQuery({ limit: 50 })
   const [search, setSearch] = useState("")
   const [dialog, setDialog] = useState<DialogKind>(null)
   const [target, setTarget] = useState<Dataset | null>(null)
   const [reason, setReason] = useState("")
   const [submitting, setSubmitting] = useState(false)
+  const updateStatus = useUpdateDatasetStatusMutation()
 
-  const datasetStats = getDatasetSummaryStats(datasets)
+  const datasetStats = { ...getDatasetSummaryStats(datasets), total: pagination?.total ?? datasets.length }
   const adminStats = getAdminSummaryStats()
 
   const rows = datasets.filter(
@@ -60,34 +63,18 @@ export default function SuperAdminDashboard() {
 
   function confirmApprove() {
     if (!target) return
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) =>
-        cur.map((d) =>
-          d.id === target.id
-            ? { ...d, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() }
-            : d
-        )
-      )
-      setSubmitting(false)
-      setDialog(null)
-      setTarget(null)
-      toast.success(`"${target.title}" approved and published.`)
-    }, 700)
+    updateStatus.mutate({ id: target.id, status: APPROVAL_STATUS.APPROVED })
+    setDialog(null)
+    setTarget(null)
   }
 
   function confirmReject() {
     if (!target) return
     if (!reason.trim()) return
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : d)))
-      setSubmitting(false)
-      setDialog(null)
-      setTarget(null)
-      setReason("")
-      toast.error(`"${target.title}" rejected.`)
-    }, 700)
+    updateStatus.mutate({ id: target.id, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() })
+    setDialog(null)
+    setTarget(null)
+    setReason("")
   }
 
   function confirmDelete() {
@@ -144,6 +131,7 @@ export default function SuperAdminDashboard() {
         <DatasetTable
           datasets={rows}
           role="super-admin"
+          loading={isPending}
           onAction={onAction}
           detailHref={(d) => `/super-admin/datasets/${d.id}`}
         />
@@ -161,8 +149,8 @@ export default function SuperAdminDashboard() {
             <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
               Cancel
             </Button>
-            <Button onClick={confirmApprove} disabled={submitting}>
-              {submitting ? "Approving…" : "Approve Dataset"}
+            <Button onClick={confirmApprove} disabled={updateStatus.isPending}>
+              {updateStatus.isPending ? "Approving…" : "Approve Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -209,8 +197,8 @@ export default function SuperAdminDashboard() {
             <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={confirmReject} disabled={submitting || !reason.trim()}>
-              {submitting ? "Rejecting…" : "Reject Dataset"}
+            <Button variant="destructive" onClick={confirmReject} disabled={updateStatus.isPending || !reason.trim()}>
+              {updateStatus.isPending ? "Rejecting…" : "Reject Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -2,12 +2,11 @@ import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
 import { Hero } from "@/features/home/Hero"
 import { VisualizationsSection } from "@/features/home/VisualizationsSection"
 import { WorkflowSection } from "@/features/home/WorkflowSection"
-import { useMockDatasets } from "@/lib/dataset-store"
+import { PublishedVisualizationCard } from "@/features/datasets/PublishedVisualizationCard"
+import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
 
 export default function HomePage() {
-  const datasets = useMockDatasets()
-    .filter((d) => d.status === APPROVAL_STATUS.APPROVED)
-    .map((dataset) => ({ dataset }))
+  const { datasets } = useDatasetsQuery({ status: APPROVAL_STATUS.APPROVED })
 
   return (
     <>
@@ -16,7 +15,8 @@ export default function HomePage() {
         <VisualizationsSection
           title="Published visualizations"
           description="Approved climate, energy and power datasets, presented as interactive visualizations in publication order."
-          datasets={datasets}
+          datasets={datasets.map((dataset) => ({ dataset }))}
+          renderCard={(dataset, props) => <PublishedVisualizationCard dataset={dataset} {...props} />}
         />
       </div>
       <WorkflowSection />

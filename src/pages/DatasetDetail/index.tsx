@@ -13,32 +13,65 @@ import {
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Skeleton } from "@/components/ui/skeleton"
 import { DatasetReview } from "@/components/dataset/DatasetReview"
 import { EmptyState } from "@/components/common/EmptyState"
-import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
+import { useAuth } from "@/hooks/useAuth"
+import { USER_ROLE } from "@/constants/user/user.constant"
+import { useDatasetDetailQuery } from "@/features/datasets/hooks/useDatasetDetailQuery"
+import { useUpdateDatasetStatusMutation } from "@/features/datasets/hooks/useUpdateDatasetStatusMutation"
+import { updateMockDatasets } from "@/lib/dataset-store"
 import { rejectionReasons } from "@/mock/csv-validation"
 import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
-import type { Dataset } from "@/constants/dataset/dataset.types"
 
 type DialogKind = "approve" | "reject" | "delete" | null
 
 export default function DatasetDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const datasets = useMockDatasets()
-  const [dataset, setDataset] = useState<Dataset | null>(() => datasets.find((d) => d.id === id) ?? null)
+  const { user } = useAuth()
+  const { dataset, detail, isPending, isError, refetch } = useDatasetDetailQuery(id)
+
+  const canModerate = user?.role === USER_ROLE.SUPER_ADMIN
   const [dialog, setDialog] = useState<DialogKind>(null)
   const [reason, setReason] = useState("")
   const [submitting, setSubmitting] = useState(false)
+  const updateStatus = useUpdateDatasetStatusMutation()
 
-  if (!dataset) {
+  if (isPending) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-8 w-24" />
+        </div>
+        <div className="grid gap-6 lg:grid-cols-5">
+          <div className="space-y-4 lg:col-span-2">
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-48 w-full" />
+          </div>
+          <Skeleton className="h-64 w-full lg:col-span-3" />
+        </div>
+      </div>
+    )
+  }
+
+  if (isError || !dataset) {
     return (
       <div className="mx-auto max-w-2xl">
         <div className="rounded-lg border">
           <EmptyState
             title="Dataset not found"
             description="This dataset may have been removed or the link is incorrect."
-            action={<Button variant="outline" size="sm" onClick={() => navigate(-1)}>Go back</Button>}
+            action={
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
+                  Go back
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => refetch()}>
+                  Retry
+                </Button>
+              </div>
+            }
           />
         </div>
       </div>
@@ -48,31 +81,15 @@ export default function DatasetDetailPage() {
   const current = dataset
 
   function confirmApprove() {
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) =>
-        cur.map((d) => (d.id === current.id ? { ...d, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() } : d))
-      )
-      setDataset((cur) => (cur ? { ...cur, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() } : cur))
-      setSubmitting(false)
-      setDialog(null)
-      toast.success(`"${current.title}" approved and published.`)
-    }, 700)
+    updateStatus.mutate({ id: current.id, status: APPROVAL_STATUS.APPROVED })
+    setDialog(null)
   }
 
   function confirmReject() {
     if (!reason.trim()) return
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) =>
-        cur.map((d) => (d.id === current.id ? { ...d, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : d))
-      )
-      setDataset((cur) => (cur ? { ...cur, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : cur))
-      setSubmitting(false)
-      setDialog(null)
-      setReason("")
-      toast.error(`"${current.title}" rejected.`)
-    }, 700)
+    updateStatus.mutate({ id: current.id, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() })
+    setDialog(null)
+    setReason("")
   }
 
   function confirmDelete() {
@@ -99,28 +116,33 @@ export default function DatasetDetailPage() {
         </Button>
       </div>
 
-      <DatasetReview dataset={dataset} />
+      <DatasetReview dataset={dataset} rows={detail?.rows} columns={detail?.csvSchema?.columns} />
 
       <div className="flex flex-wrap justify-end gap-2 border-t pt-5">
         <Button variant="destructive" onClick={() => setDialog("delete")}>
           Delete
         </Button>
-        <Button
-          variant="outline"
-          onClick={() => {
-            setReason("")
-            setDialog("reject")
-          }}
-        >
-          Reject
-        </Button>
-        <Button
-          onClick={() => setDialog("approve")}
-          disabled={dataset.status === APPROVAL_STATUS.APPROVED}
-          className="min-w-36"
-        >
-          {dataset.status === APPROVAL_STATUS.APPROVED ? "Approved" : "Approve"}
-        </Button>
+        {canModerate && (
+          <>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setReason("")
+                setDialog("reject")
+              }}
+              disabled={dataset.status === APPROVAL_STATUS.REJECTED}
+            >
+              Reject
+            </Button>
+            <Button
+              onClick={() => setDialog("approve")}
+              disabled={dataset.status === APPROVAL_STATUS.APPROVED}
+              className="min-w-36"
+            >
+              {dataset.status === APPROVAL_STATUS.APPROVED ? "Approved" : "Approve"}
+            </Button>
+          </>
+        )}
       </div>
 
       <Dialog open={dialog === "approve"} onOpenChange={(open) => !open && setDialog(null)}>
@@ -133,8 +155,8 @@ export default function DatasetDetailPage() {
             <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
               Cancel
             </Button>
-            <Button onClick={confirmApprove} disabled={submitting}>
-              {submitting ? "Approving…" : "Approve Dataset"}
+            <Button onClick={confirmApprove} disabled={updateStatus.isPending}>
+              {updateStatus.isPending ? "Approving…" : "Approve Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -169,8 +191,8 @@ export default function DatasetDetailPage() {
             <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={confirmReject} disabled={submitting || !reason.trim()}>
-              {submitting ? "Rejecting…" : "Reject Dataset"}
+            <Button variant="destructive" onClick={confirmReject} disabled={updateStatus.isPending || !reason.trim()}>
+              {updateStatus.isPending ? "Rejecting…" : "Reject Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>

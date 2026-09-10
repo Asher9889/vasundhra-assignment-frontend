@@ -120,15 +120,19 @@ export function DatasetTable({
                 <TableCell className="text-muted-foreground">{dataset.uploadedBy}</TableCell>
               ) : (
                 <TableCell>
-                  <span
-                    className={cn(
-                      "inline-flex items-center gap-1 text-xs font-medium",
-                      dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
-                    )}
-                  >
-                    <span className={cn("size-1.5 rounded-full", dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "bg-emerald-500" : "bg-muted-foreground")} />
-                    {dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "Active" : "Inactive"}
-                  </span>
+                  {dataset.activeStatus ? (
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1 text-xs font-medium",
+                        dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
+                      )}
+                    >
+                      <span className={cn("size-1.5 rounded-full", dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "bg-emerald-500" : "bg-muted-foreground")} />
+                      {dataset.activeStatus === DATASET_ACTIVE_STATUS.ACTIVE ? "Active" : "Inactive"}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground">—</span>
+                  )}
                 </TableCell>
               )}
               <TableCell>

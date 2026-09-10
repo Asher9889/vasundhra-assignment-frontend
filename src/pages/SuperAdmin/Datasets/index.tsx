@@ -1,10 +1,18 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { PageHeader } from "@/components/common/PageHeader"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { EmptyState } from "@/components/common/EmptyState"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   Dialog,
   DialogContent,
@@ -13,47 +21,36 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import {
-  APPROVAL_STATUS,
-} from "@/constants/dataset/dataset.constants"
-import type { ApprovalStatus, Dataset } from "@/constants/dataset/dataset.types"
+import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
+import type { Dataset } from "@/constants/dataset/dataset.types"
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
-import { useMockDatasets, updateMockDatasets } from "@/lib/dataset-store"
+import { useDatasetsListQuery } from "@/features/datasets/hooks/useDatasetsListQuery"
+import { useUpdateDatasetStatusMutation } from "@/features/datasets/hooks/useUpdateDatasetStatusMutation"
+import { updateMockDatasets } from "@/lib/dataset-store"
 import { rejectionReasons } from "@/mock/csv-validation"
 
 type DialogKind = "approve" | "reject" | "delete" | null
 
+const SORT_OPTIONS = [
+  { value: "createdAt:desc", label: "Newest first" },
+  { value: "createdAt:asc", label: "Oldest first" },
+  { value: "title:asc", label: "Title A-Z" },
+  { value: "title:desc", label: "Title Z-A" },
+  { value: "domain:asc", label: "Domain A-Z" },
+]
+
 export default function SuperAdminDatasetsPage() {
   const navigate = useNavigate()
-  const datasets = useMockDatasets()
-  const [tab, setTab] = useState<ApprovalStatus | "all">("all")
-  const [search, setSearch] = useState("")
+  const { datasets, pagination, isPending, isError, refetch, page, status, sort, searchInput, setSearchInput, updateParams } =
+    useDatasetsListQuery()
+
   const [dialog, setDialog] = useState<DialogKind>(null)
   const [target, setTarget] = useState<Dataset | null>(null)
   const [reason, setReason] = useState("")
   const [submitting, setSubmitting] = useState(false)
-
-  const counts = useMemo(
-    () => ({
-      all: datasets.length,
-      pending: datasets.filter((d) => d.status === APPROVAL_STATUS.PENDING).length,
-      approved: datasets.filter((d) => d.status === APPROVAL_STATUS.APPROVED).length,
-      rejected: datasets.filter((d) => d.status === APPROVAL_STATUS.REJECTED).length,
-    }),
-    [datasets]
-  )
-
-  const rows = datasets.filter((d) => {
-    const matchesTab = tab === "all" || d.status === tab
-    const matchesSearch =
-      d.title.toLowerCase().includes(search.toLowerCase()) ||
-      d.uploadedBy.toLowerCase().includes(search.toLowerCase()) ||
-      d.domain.toLowerCase().includes(search.toLowerCase())
-    return matchesTab && matchesSearch
-  })
+  const updateStatus = useUpdateDatasetStatusMutation()
 
   function onAction(action: DatasetAction, dataset: Dataset) {
     if (action === "view") navigate(`/super-admin/datasets/${dataset.id}`)
@@ -74,27 +71,17 @@ export default function SuperAdminDatasetsPage() {
 
   function confirmApprove() {
     if (!target) return
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: APPROVAL_STATUS.APPROVED, approvedAt: new Date().toISOString() } : d)))
-      setSubmitting(false)
-      setDialog(null)
-      setTarget(null)
-      toast.success(`"${target.title}" approved and published.`)
-    }, 700)
+    updateStatus.mutate({ id: target.id, status: APPROVAL_STATUS.APPROVED })
+    setDialog(null)
+    setTarget(null)
   }
 
   function confirmReject() {
     if (!target || !reason.trim()) return
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.map((d) => (d.id === target.id ? { ...d, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() } : d)))
-      setSubmitting(false)
-      setDialog(null)
-      setTarget(null)
-      setReason("")
-      toast.error(`"${target.title}" rejected.`)
-    }, 700)
+    updateStatus.mutate({ id: target.id, status: APPROVAL_STATUS.REJECTED, rejectionReason: reason.trim() })
+    setDialog(null)
+    setTarget(null)
+    setReason("")
   }
 
   function confirmDelete() {
@@ -109,6 +96,9 @@ export default function SuperAdminDatasetsPage() {
     }, 500)
   }
 
+  const start = pagination ? (pagination.page - 1) * pagination.limit + 1 : 0
+  const end = pagination ? Math.min(pagination.page * pagination.limit, pagination.total) : 0
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -116,36 +106,99 @@ export default function SuperAdminDatasetsPage() {
         description="Review all submitted datasets and moderate publishing decisions."
       />
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Tabs value={tab} onValueChange={(v) => setTab(v as ApprovalStatus | "all")} className="w-full sm:w-auto">
-          <TabsList className="w-full sm:w-auto">
-            <TabsTrigger value="all">All ({counts.all})</TabsTrigger>
-            <TabsTrigger value={APPROVAL_STATUS.PENDING}>Pending ({counts.pending})</TabsTrigger>
-            <TabsTrigger value={APPROVAL_STATUS.APPROVED}>Approved ({counts.approved})</TabsTrigger>
-            <TabsTrigger value={APPROVAL_STATUS.REJECTED}>Rejected ({counts.rejected})</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        <div className="relative ml-auto w-full sm:w-64">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search title, uploader, domain…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-8"
-            aria-label="Search datasets"
-          />
+      <div className="flex flex-wrap items-center gap-2">
+        {pagination && (
+          <span className="text-sm text-muted-foreground">
+            {pagination.total > 0 ? `${pagination.total} dataset${pagination.total === 1 ? "" : "s"}` : "No datasets"}
+          </span>
+        )}
+
+        <div className="ml-auto flex flex-wrap items-center gap-2">
+          <div className="relative w-full sm:w-64">
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search title, uploader, domain…"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="pl-8"
+              aria-label="Search datasets"
+            />
+          </div>
+
+          <Select value={status ?? "ALL"} onValueChange={(value) => updateParams({ status: value === "ALL" ? null : value })}>
+            <SelectTrigger className="h-8" aria-label="Filter by approval status">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="end">
+              <SelectItem value="ALL">All statuses</SelectItem>
+              <SelectItem value={APPROVAL_STATUS.PENDING}>Pending</SelectItem>
+              <SelectItem value={APPROVAL_STATUS.APPROVED}>Approved</SelectItem>
+              <SelectItem value={APPROVAL_STATUS.REJECTED}>Rejected</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={sort} onValueChange={(value) => updateParams({ sort: value })}>
+            <SelectTrigger className="h-8" aria-label="Sort datasets">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="end">
+              {SORT_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
-      <DatasetTable
-        datasets={rows}
-        role="super-admin"
-        onAction={onAction}
-        detailHref={(d) => `/super-admin/datasets/${d.id}`}
-        emptyTitle="No datasets found"
-        emptyDescription="Try a different filter or search term."
-      />
+      {isError ? (
+        <div className="rounded-lg border">
+          <EmptyState title="Couldn't load datasets" description="The server may be unreachable. Try again." />
+          <div className="flex justify-center pb-6">
+            <Button variant="outline" size="sm" onClick={() => refetch()}>
+              Retry
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <DatasetTable
+            datasets={datasets}
+            role="super-admin"
+            loading={isPending}
+            onAction={onAction}
+            detailHref={(d) => `/super-admin/datasets/${d.id}`}
+            emptyTitle="No datasets found"
+            emptyDescription="Try a different filter or search term."
+          />
+
+          {pagination && pagination.total > 0 && (
+            <div className="flex items-center justify-between gap-4 border-t px-4 py-3">
+              <span className="text-sm text-muted-foreground">
+                {pagination.total === 0 ? "No datasets" : `Showing ${start}–${end} of ${pagination.total}`}
+              </span>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => updateParams({ page: String(page - 1) })}>
+                  Previous
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  Page {page} of {pagination.totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page >= pagination.totalPages}
+                  onClick={() => updateParams({ page: String(page + 1) })}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
 
       <Dialog open={dialog === "approve"} onOpenChange={(open) => !open && setDialog(null)}>
         <DialogContent className="sm:max-w-md">
@@ -157,8 +210,8 @@ export default function SuperAdminDatasetsPage() {
             <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
               Cancel
             </Button>
-            <Button onClick={confirmApprove} disabled={submitting}>
-              {submitting ? "Approving…" : "Approve Dataset"}
+            <Button onClick={confirmApprove} disabled={updateStatus.isPending}>
+              {updateStatus.isPending ? "Approving…" : "Approve Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -195,8 +248,8 @@ export default function SuperAdminDatasetsPage() {
             <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={confirmReject} disabled={submitting || !reason.trim()}>
-              {submitting ? "Rejecting…" : "Reject Dataset"}
+            <Button variant="destructive" onClick={confirmReject} disabled={updateStatus.isPending || !reason.trim()}>
+              {updateStatus.isPending ? "Rejecting…" : "Reject Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>

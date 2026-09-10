@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, CalendarDays } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
 import type { Dataset } from "@/constants/dataset/dataset.types"
 import { VisualizationRenderer } from "./VisualizationRenderer"
 import { chartTypeLabels, domainLabels, formatDate } from "@/lib/format"
@@ -11,6 +12,7 @@ interface VisualizationCardProps {
   showDomain?: boolean
   detailHref?: string
   aspect?: "wide" | "standard"
+  isLoading?: boolean
 }
 
 export function VisualizationCard({
@@ -18,6 +20,7 @@ export function VisualizationCard({
   showDomain = true,
   detailHref,
   aspect = "standard",
+  isLoading = false,
 }: VisualizationCardProps) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-lg border bg-card">
@@ -28,7 +31,13 @@ export function VisualizationCard({
         )}
       >
         <div className="absolute inset-0 p-3">
-          <VisualizationRenderer data={dataset.data} height={undefined} />
+          {isLoading ? (
+            <div className="flex h-full items-center justify-center">
+              <Skeleton className="h-full w-full" />
+            </div>
+          ) : (
+            <VisualizationRenderer data={dataset.data} height={undefined} />
+          )}
         </div>
       </div>
 
