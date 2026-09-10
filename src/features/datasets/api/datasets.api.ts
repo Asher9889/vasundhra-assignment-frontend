@@ -49,6 +49,18 @@ export async function getDatasetDetail(id: string): Promise<DatasetDetailRespons
   return response.data
 }
 
+export async function listPublicDatasets(query: DatasetListQueryParams = {}): Promise<DatasetListResponse> {
+  const { url, method } = apiEndPoints.datasets.publicList
+  const response = await apiRequest<AxiosApiResponse<DatasetListResponse>>({ url, method, params: query })
+  return response.data
+}
+
+export async function getPublicDatasetDetail(id: string): Promise<DatasetDetailResponse> {
+  const { url, method } = apiEndPoints.datasets.publicDetail(id)
+  const response = await apiRequest<AxiosApiResponse<DatasetDetailResponse>>({ url, method })
+  return response.data
+}
+
 export async function updateDatasetStatus(id: string, payload: UpdateDatasetStatusPayload): Promise<Dataset> {
   const { url, method } = apiEndPoints.datasets.updateStatus(id)
   const response = await apiRequest<AxiosApiResponse<DatasetListResponseItem>>({ url, method, data: payload })

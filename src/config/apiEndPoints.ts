@@ -37,6 +37,14 @@ const apiEndPoints = {
             url: `/datasets/${id}`,
             method: "GET"
         }),
+        publicList: {
+            url: "/datasets/public",
+            method: "GET"
+        },
+        publicDetail: (id: string) => ({
+            url: `/datasets/public/${id}`,
+            method: "GET"
+        }),
         upload: {
             url: "/datasets/upload",
             method: "POST"

@@ -1,6 +1,6 @@
 import type { Dataset } from "@/constants/dataset/dataset.types"
 import { VisualizationCard } from "@/components/visualization/VisualizationCard"
-import { useDatasetDetailQuery } from "./hooks/useDatasetDetailQuery"
+import { usePublicDatasetDetailQuery } from "./hooks/usePublicDatasetDetailQuery"
 
 interface PublishedVisualizationCardProps {
   dataset: Dataset
@@ -15,7 +15,7 @@ export function PublishedVisualizationCard({
   detailHref,
   aspect,
 }: PublishedVisualizationCardProps) {
-  const { dataset: detailDataset, isPending } = useDatasetDetailQuery(dataset.id)
+  const { dataset: detailDataset, isPending } = usePublicDatasetDetailQuery(dataset.id)
 
   return (
     <VisualizationCard

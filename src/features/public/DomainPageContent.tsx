@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/common/PageHeader"
 import { EmptyState } from "@/components/common/EmptyState"
 import { PublishedVisualizationCard } from "@/features/datasets/PublishedVisualizationCard"
-import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
+import { usePublicDatasetsQuery } from "@/features/datasets/hooks/usePublicDatasetsQuery"
 import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
 import type { Domain } from "@/constants/dataset/dataset.types"
 import { domainLabels } from "@/lib/format"
@@ -12,7 +12,7 @@ interface DomainPageContentProps {
 }
 
 export function DomainPageContent({ domain, description }: DomainPageContentProps) {
-  const { datasets } = useDatasetsQuery({ domain, status: APPROVAL_STATUS.APPROVED })
+  const { datasets } = usePublicDatasetsQuery({ domain, status: APPROVAL_STATUS.APPROVED })
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">

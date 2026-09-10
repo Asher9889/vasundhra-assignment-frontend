@@ -3,10 +3,10 @@ import { Hero } from "@/features/home/Hero"
 import { VisualizationsSection } from "@/features/home/VisualizationsSection"
 import { WorkflowSection } from "@/features/home/WorkflowSection"
 import { PublishedVisualizationCard } from "@/features/datasets/PublishedVisualizationCard"
-import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
+import { usePublicDatasetsQuery } from "@/features/datasets/hooks/usePublicDatasetsQuery"
 
 export default function HomePage() {
-  const { datasets } = useDatasetsQuery({ status: APPROVAL_STATUS.APPROVED })
+  const { datasets } = usePublicDatasetsQuery({ status: APPROVAL_STATUS.APPROVED })
 
   return (
     <>
