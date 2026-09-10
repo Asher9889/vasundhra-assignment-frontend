@@ -7,6 +7,7 @@ import {
 } from "@/constants/dataset/dataset.constants"
 import type { ChartData, DatasetTemplate, Domain } from "@/constants/dataset/dataset.types"
 import type { SeriesType } from "../types/add-dataset.types"
+import { StepSection } from "./StepSection"
 
 interface ChartPreviewProps {
   data: ChartData
@@ -26,7 +27,11 @@ export function ChartPreview({ data, title, domain, templateType, seriesType, he
         : CHART_TYPE.INDIA_MAP
 
   return (
-    <div className="space-y-3">
+    <StepSection
+      heading="6 · Visualization Preview"
+      description="This is how your visualization will render with the selected columns."
+    >
+      <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-sm font-medium text-foreground">{title.trim() || "Untitled visualization"}</span>
         {domain && <Badge variant="secondary">{domainLabels[domain]}</Badge>}
@@ -37,5 +42,6 @@ export function ChartPreview({ data, title, domain, templateType, seriesType, he
         <VisualizationRenderer data={data} height={height} />
       </div>
     </div>
+    </StepSection>
   )
 }

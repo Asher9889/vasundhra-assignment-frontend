@@ -2,33 +2,33 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { DATASET_UPLOAD_PHASE } from "@/constants/dataset/dataset.constants"
 import type { DatasetUploadPhase } from "@/constants/dataset/dataset.types"
-import { parseUpload } from "../api/parseUpload.api"
+import { uploadDataset } from "../api/uploadDataset.api"
 import type { ParsedCSV } from "../types/add-dataset.types"
 
 export interface UseDatasetUploadResult {
-  file: File | null
-  phase: DatasetUploadPhase
-  parsed: ParsedCSV | null
-  errors: string[]
-  selectFile: (file: File | null) => void
-  reset: () => void
+  file: File | null;
+  phase: DatasetUploadPhase;
+  parsedData: ParsedCSV | null;
+  errors: string[];
+  selectFile: (file: File | null) => void;
+  reset: () => void;
 }
 
 function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message
-  return "Unable to parse the file. Please check that the file is valid CSV."
+  if (error instanceof Error) return error.message;
+  return "Unable to parse the file. Please check that the file is valid CSV.";
 }
 
-export function useDatasetUpload(onParsed?: (parsed: ParsedCSV) => void): UseDatasetUploadResult {
-  const [file, setFile] = useState<File | null>(null)
+export function useDatasetUpload(onParsed?: (parsedData: ParsedCSV) => void): UseDatasetUploadResult {
+  const [file, setFile] = useState<File | null>(null);
   const mutation = useMutation({
-    mutationFn: (next: File) => parseUpload(next),
+    mutationFn: (file: File) => uploadDataset(file),
     onSuccess: (result) => {
-      if (result.columns.length > 0) onParsed?.(result)
+      if (result.columns.length > 0) onParsed?.(result);
     },
   })
 
-  const parsed = mutation.isSuccess ? mutation.data : null
+  const parsedData = mutation.isSuccess ? mutation.data : null
   const isEmpty = mutation.isSuccess && mutation.data.columns.length === 0
   const phase: DatasetUploadPhase = !file
     ? DATASET_UPLOAD_PHASE.IDLE
@@ -57,5 +57,5 @@ export function useDatasetUpload(onParsed?: (parsed: ParsedCSV) => void): UseDat
     mutation.reset()
   }
 
-  return { file, phase, parsed, errors, selectFile, reset }
+  return { file, phase, parsedData, errors, selectFile, reset }
 }

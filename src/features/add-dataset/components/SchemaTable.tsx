@@ -2,6 +2,7 @@ import { CalendarDays, Hash, Type } from "lucide-react"
 import { formatNumber } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { ColumnType, ParsedCSV } from "../types/add-dataset.types"
+import { StepSection } from "./StepSection"
 
 interface SchemaTableProps {
   parsed: ParsedCSV
@@ -15,7 +16,8 @@ const typeMeta: Record<ColumnType, { icon: React.ComponentType<{ className?: str
 
 export function SchemaTable({ parsed }: SchemaTableProps) {
   return (
-    <div className="overflow-hidden rounded-lg border">
+    <StepSection heading="2 · Detected Dataset Structure" description="The columns detected in your file and their types.">
+      <div className="overflow-hidden rounded-lg border">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -53,6 +55,7 @@ export function SchemaTable({ parsed }: SchemaTableProps) {
         {parsed.columns.length} column{parsed.columns.length === 1 ? "" : "s"} · {formatNumber(parsed.rowCount)} row
         {parsed.rowCount === 1 ? "" : "s"}
       </div>
-    </div>
+      </div>
+    </StepSection>
   )
 }

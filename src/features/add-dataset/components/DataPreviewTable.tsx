@@ -1,4 +1,5 @@
 import type { ParsedCSV } from "../types/add-dataset.types"
+import { StepSection } from "./StepSection"
 
 interface DataPreviewTableProps {
   parsed: ParsedCSV
@@ -12,7 +13,8 @@ export function DataPreviewTable({ parsed, maxRows = DEFAULT_MAX_ROWS }: DataPre
   const hasMore = parsed.rowCount > maxRows
 
   return (
-    <div className="overflow-hidden rounded-lg border">
+    <StepSection heading="4 · Dataset Preview" description="Verify the first few rows of your file.">
+      <div className="overflow-hidden rounded-lg border">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -42,6 +44,7 @@ export function DataPreviewTable({ parsed, maxRows = DEFAULT_MAX_ROWS }: DataPre
           Showing first {previewRows.length} of {parsed.rowCount} rows
         </div>
       )}
-    </div>
+      </div>
+    </StepSection>
   )
 }

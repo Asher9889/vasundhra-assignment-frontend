@@ -9,6 +9,7 @@ import type { DatasetUploadPhase } from "@/constants/dataset/dataset.types"
 import { formatNumber } from "@/lib/format"
 import { formatFileSize } from "../csv"
 import type { ParsedCSV } from "../types/add-dataset.types"
+import { StepSection } from "./StepSection"
 
 interface DatasetFileStepProps {
   phase: DatasetUploadPhase
@@ -157,27 +158,29 @@ export function DatasetFileStep({ phase, file, parsed, errors, onFile }: Dataset
     ) : null
 
   return (
-    <div className="space-y-3">
-      <Label htmlFor="csv-file-input" className="sr-only">
-        Choose CSV file
-      </Label>
-      <Input
-        ref={inputRef}
-        id="csv-file-input"
-        type="file"
-        accept=".csv,text/csv"
-        className="sr-only"
-        tabIndex={-1}
-        onChange={(e) => acceptFile(e.target.files?.[0])}
-      />
+    <StepSection heading="1 · Dataset File" description="Upload a CSV file to create a visualization.">
+      <div className="space-y-3">
+        <Label htmlFor="csv-file-input" className="sr-only">
+          Choose CSV file
+        </Label>
+        <Input
+          ref={inputRef}
+          id="csv-file-input"
+          type="file"
+          accept=".csv,text/csv"
+          className="sr-only"
+          tabIndex={-1}
+          onChange={(e) => acceptFile(e.target.files?.[0])}
+        />
 
-      {phase === DATASET_UPLOAD_PHASE.IDLE
-        ? dropZone
-        : phase === DATASET_UPLOAD_PHASE.UPLOADING
-          ? analyzingCard
-          : phase === DATASET_UPLOAD_PHASE.INVALID
-            ? errorCard
-            : fileCard}
-    </div>
+        {phase === DATASET_UPLOAD_PHASE.IDLE
+          ? dropZone
+          : phase === DATASET_UPLOAD_PHASE.UPLOADING
+            ? analyzingCard
+            : phase === DATASET_UPLOAD_PHASE.INVALID
+              ? errorCard
+              : fileCard}
+      </div>
+    </StepSection>
   )
 }

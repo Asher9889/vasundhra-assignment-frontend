@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import { ColumnSelect } from "./ColumnSelect"
 import { columnNames, columnNamesOfType } from "../csv"
 import type { ParsedCSV, SeriesType } from "../types/add-dataset.types"
+import { StepSection } from "./StepSection"
 import {
   CHART_TYPE,
   DATASET_TEMPLATE,
@@ -72,7 +73,8 @@ export function VisualizationConfig({
   const stateOptions = stringColumns.length > 0 ? stringColumns : allColumns
 
   return (
-    <div className="space-y-5">
+    <StepSection heading="3 · Visualization" description="Choose a visualization type and map the columns from your file.">
+      <div className="space-y-5">
       <div className="space-y-2">
         <Label id="template-label">Dataset / Visualization Type</Label>
         <div role="radiogroup" aria-labelledby="template-label" className="grid gap-2 sm:grid-cols-3">
@@ -137,5 +139,6 @@ export function VisualizationConfig({
         </div>
       )}
     </div>
+    </StepSection>
   )
 }

@@ -29,7 +29,7 @@ const apiEndPoints = {
         }),
     },
     datasets: {
-        parse: {
+        upload: {
             url: "/datasets",
             method: "POST"
         },

@@ -23,7 +23,7 @@ import { SuccessPanel } from "./components/SuccessPanel"
 import { suggestColumns } from "./csv"
 import { buildChartData } from "./chart-builder"
 import { useDatasetUpload } from "./hooks/useDatasetUpload"
-import type { SeriesType } from "./types/add-dataset.types"
+import type { ParsedCSV, SeriesType } from "./types/add-dataset.types"
 
 export function AddDatasetForm() {
   const navigate = useNavigate()
@@ -38,20 +38,24 @@ export function AddDatasetForm() {
   const [longitudeColumn, setLongitudeColumn] = useState("")
   const [title, setTitle] = useState("")
 
-  const { file, phase, parsed, errors, selectFile, reset: resetUpload } = useDatasetUpload((result) => {
+
+
+  const { file, phase, parsedData, errors, selectFile, reset: resetUpload } = useDatasetUpload(applyParsedDefaults);
+
+  function applyParsedDefaults(result: ParsedCSV) {
     setTemplateType(DATASET_TEMPLATE.TIMESERIES)
     const suggestion = suggestColumns(result, DATASET_TEMPLATE.TIMESERIES)
     setXColumn(suggestion.xColumn ?? "")
     setValueColumn(suggestion.valueColumn ?? "")
-  })
+  }
 
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(SUBMIT_STATUS.IDLE)
 
   const chartData = useMemo(
     () =>
-      parsed
+      parsedData
         ? buildChartData({
-          parsed,
+          parsed: parsedData,
           templateType,
           seriesType,
           xColumn,
@@ -61,7 +65,7 @@ export function AddDatasetForm() {
           longitudeColumn,
         })
         : null,
-    [parsed, templateType, seriesType, xColumn, valueColumn, stateColumn, latitudeColumn, longitudeColumn]
+    [parsedData, templateType, seriesType, xColumn, valueColumn, stateColumn, latitudeColumn, longitudeColumn]
   )
 
   const configComplete =
@@ -75,7 +79,7 @@ export function AddDatasetForm() {
 
   const canSubmit =
     phase === DATASET_UPLOAD_PHASE.VALID &&
-    Boolean(parsed) &&
+    Boolean(parsedData) &&
     Boolean(domain) &&
     Boolean(templateType) &&
     configComplete &&
@@ -98,9 +102,9 @@ export function AddDatasetForm() {
 
   function handleTemplateChange(next: DatasetTemplate) {
     setTemplateType(next)
-    if (!parsed) return
+    if (!parsedData) return
 
-    const suggestion = suggestColumns(parsed, next)
+    const suggestion = suggestColumns(parsedData, next)
     if (next === DATASET_TEMPLATE.TIMESERIES) {
       setXColumn(suggestion.xColumn ?? "")
       setValueColumn(suggestion.valueColumn ?? "")
@@ -116,7 +120,7 @@ export function AddDatasetForm() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!canSubmit || !parsed || !domain || !templateType || !chartData) return
+    if (!canSubmit || !parsedData || !domain || !templateType || !chartData) return
 
     setSubmitStatus(SUBMIT_STATUS.SUBMITTING)
     window.setTimeout(() => {
@@ -139,7 +143,7 @@ export function AddDatasetForm() {
         status: APPROVAL_STATUS.PENDING,
         activeStatus: DATASET_ACTIVE_STATUS.ACTIVE,
         fileName: file?.name ?? "dataset.csv",
-        rowCount: parsed.rowCount,
+        rowCount: parsedData.rowCount,
         createdAt: new Date().toISOString(),
       }
       addMockDataset(newDataset)
@@ -154,87 +158,49 @@ export function AddDatasetForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
-      <section className="space-y-4 rounded-lg border bg-card p-5 sm:p-6">
-        <div>
-          <h2 className="font-heading text-base font-semibold tracking-tight">1 · Dataset File</h2>
-          <p className="mt-0.5 text-sm text-muted-foreground">Upload a CSV file to create a visualization.</p>
-        </div>
-        <DatasetFileStep phase={phase} file={file} parsed={parsed} errors={errors} onFile={selectFile} />
-      </section>
+      <DatasetFileStep phase={phase} file={file} parsed={parsedData} errors={errors} onFile={selectFile} />
 
-      {phase === DATASET_UPLOAD_PHASE.VALID && parsed && (
+      {phase === DATASET_UPLOAD_PHASE.VALID && parsedData && (
         <>
-          <section className="space-y-4 rounded-lg border bg-card p-5 sm:p-6">
-            <div>
-              <h2 className="font-heading text-base font-semibold tracking-tight">2 · Detected Dataset Structure</h2>
-              <p className="mt-0.5 text-sm text-muted-foreground">The columns detected in your file and their types.</p>
-            </div>
-            <SchemaTable parsed={parsed} />
-          </section>
+          <SchemaTable parsed={parsedData} />
 
-          <section className="space-y-4 rounded-lg border bg-card p-5 sm:p-6">
-            <div>
-              <h2 className="font-heading text-base font-semibold tracking-tight">3 · Visualization</h2>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                Choose a visualization type and map the columns from your file.
-              </p>
-            </div>
-            <VisualizationConfig
-              parsed={parsed}
-              templateType={templateType}
-              seriesType={seriesType}
-              xColumn={xColumn}
-              valueColumn={valueColumn}
-              stateColumn={stateColumn}
-              latitudeColumn={latitudeColumn}
-              longitudeColumn={longitudeColumn}
-              onTemplateChange={handleTemplateChange}
-              onSeriesTypeChange={setSeriesType}
-              onXColumnChange={setXColumn}
-              onValueColumnChange={setValueColumn}
-              onStateColumnChange={setStateColumn}
-              onLatitudeColumnChange={setLatitudeColumn}
-              onLongitudeColumnChange={setLongitudeColumn}
-            />
-          </section>
+          <VisualizationConfig
+            parsed={parsedData}
+            templateType={templateType}
+            seriesType={seriesType}
+            xColumn={xColumn}
+            valueColumn={valueColumn}
+            stateColumn={stateColumn}
+            latitudeColumn={latitudeColumn}
+            longitudeColumn={longitudeColumn}
+            onTemplateChange={handleTemplateChange}
+            onSeriesTypeChange={setSeriesType}
+            onXColumnChange={setXColumn}
+            onValueColumnChange={setValueColumn}
+            onStateColumnChange={setStateColumn}
+            onLatitudeColumnChange={setLatitudeColumn}
+            onLongitudeColumnChange={setLongitudeColumn}
+          />
 
-          {templateType && (
-            <section className="space-y-4 rounded-lg border bg-card p-5 sm:p-6">
-              <div>
-                <h2 className="font-heading text-base font-semibold tracking-tight">4 · Dataset Preview</h2>
-                <p className="mt-0.5 text-sm text-muted-foreground">Verify the first few rows of your file.</p>
-              </div>
-              <DataPreviewTable parsed={parsed} />
-            </section>
-          )}
+          {templateType && <DataPreviewTable parsed={parsedData} />}
 
-          <section className="space-y-4 rounded-lg border bg-card p-5 sm:p-6">
-            <div>
-              <h2 className="font-heading text-base font-semibold tracking-tight">5 · Visualization Details</h2>
-              <p className="mt-0.5 text-sm text-muted-foreground">Set a title and assign the visualization to a domain.</p>
-            </div>
-            <VisualizationDetails title={title} domain={domain} onTitleChange={setTitle} onDomainChange={setDomain} />
-          </section>
+          <VisualizationDetails title={title} domain={domain} onTitleChange={setTitle} onDomainChange={setDomain} />
 
           {chartData && templateType && (
-            <section className="space-y-4 rounded-lg border bg-card p-5 sm:p-6">
-              <div>
-                <h2 className="font-heading text-base font-semibold tracking-tight">6 · Visualization Preview</h2>
-                <p className="mt-0.5 text-sm text-muted-foreground">
-                  This is how your visualization will render with the selected columns.
-                </p>
-              </div>
-              <ChartPreview
-                data={chartData}
-                title={title}
-                domain={domain}
-                templateType={templateType}
-                seriesType={seriesType}
-              />
-            </section>
+            <ChartPreview
+              data={chartData}
+              title={title}
+              domain={domain}
+              templateType={templateType}
+              seriesType={seriesType}
+            />
           )}
 
-          <SubmitPanel canSubmit={canSubmit} isSubmitting={submitStatus === SUBMIT_STATUS.SUBMITTING} onCancel={resetForm} />
+          <SubmitPanel
+            canSubmit={canSubmit}
+            isSubmitting={submitStatus === SUBMIT_STATUS.SUBMITTING}
+            onCancel={resetForm}
+          />
         </>
       )}
     </form>

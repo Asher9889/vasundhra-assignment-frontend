@@ -2,6 +2,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { SelectDomain } from "../SelectDomain"
 import type { Domain } from "@/constants/dataset/dataset.types"
+import { StepSection } from "./StepSection"
 
 interface VisualizationDetailsProps {
   title: string
@@ -17,7 +18,8 @@ export function VisualizationDetails({
   onDomainChange,
 }: VisualizationDetailsProps) {
   return (
-    <div className="grid gap-5 sm:grid-cols-2">
+    <StepSection heading="5 · Visualization Details" description="Set a title and assign the visualization to a domain.">
+      <div className="grid gap-5 sm:grid-cols-2">
       <div className="space-y-2">
         <Label htmlFor="chart-title">
           Chart Title <span className="text-destructive">*</span>
@@ -37,5 +39,6 @@ export function VisualizationDetails({
         <p className="text-xs text-muted-foreground">The section of the public site this visualization belongs in.</p>
       </div>
     </div>
+    </StepSection>
   )
 }
