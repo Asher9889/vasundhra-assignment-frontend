@@ -95,16 +95,16 @@ interface DatasetPreviewProps {
 
 export function DatasetPreview({ templateType, timeseriesChartType, title, domain, height = 240 }: DatasetPreviewProps) {
   const data: ChartData =
-    templateType === DATASET_TEMPLATE.TIMESERIES
+    templateType === DATASET_TEMPLATE.TIME_SERIES
       ? previewTimeseries[timeseriesChartType]
-      : templateType === DATASET_TEMPLATE.STATEWISE
+      : templateType === DATASET_TEMPLATE.STATE_WISE
         ? previewHeatmapData
         : previewMapData
 
   const chartType =
-    templateType === DATASET_TEMPLATE.TIMESERIES
+    templateType === DATASET_TEMPLATE.TIME_SERIES
       ? timeseriesChartType
-      : templateType === DATASET_TEMPLATE.STATEWISE
+      : templateType === DATASET_TEMPLATE.STATE_WISE
         ? CHART_TYPE.STATE_HEATMAP
         : CHART_TYPE.INDIA_MAP
 

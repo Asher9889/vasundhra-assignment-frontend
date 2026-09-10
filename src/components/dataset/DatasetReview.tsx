@@ -90,20 +90,20 @@ export function DatasetReview({ dataset }: DatasetReviewProps) {
             <thead className="border-b bg-muted/40">
               <tr>
                 <th className="px-3 py-2 font-medium text-foreground">Row</th>
-                {dataset.templateType === DATASET_TEMPLATE.LATLON && (
+                {dataset.templateType === DATASET_TEMPLATE.LAT_LONG && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">Latitude</th>
                     <th className="px-3 py-2 font-medium text-foreground">Longitude</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
                   </>
                 )}
-                {dataset.templateType === DATASET_TEMPLATE.STATEWISE && (
+                {dataset.templateType === DATASET_TEMPLATE.STATE_WISE && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">State</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
                   </>
                 )}
-                {dataset.templateType === DATASET_TEMPLATE.TIMESERIES && (
+                {dataset.templateType === DATASET_TEMPLATE.TIME_SERIES && (
                   <>
                     <th className="px-3 py-2 font-medium text-foreground">Date / Year</th>
                     <th className="px-3 py-2 font-medium text-foreground">Value</th>
@@ -116,12 +116,12 @@ export function DatasetReview({ dataset }: DatasetReviewProps) {
                 <tr key={i} className="border-b last:border-0">
                   <td className="px-3 py-1.5">{i + 1}</td>
                   <td className="px-3 py-1.5">
-                    {dataset.templateType === DATASET_TEMPLATE.TIMESERIES ? 2005 + i : dataset.templateType === DATASET_TEMPLATE.LATLON ? `28.6${i}` : "Rajasthan"}
+                    {dataset.templateType === DATASET_TEMPLATE.TIME_SERIES ? 2005 + i : dataset.templateType === DATASET_TEMPLATE.LAT_LONG ? `28.6${i}` : "Rajasthan"}
                   </td>
                   <td className="px-3 py-1.5">
-                    {dataset.templateType === DATASET_TEMPLATE.LATLON ? `77.2${i}` : 24 + i * 3}
+                    {dataset.templateType === DATASET_TEMPLATE.LAT_LONG ? `77.2${i}` : 24 + i * 3}
                   </td>
-                  {dataset.templateType === DATASET_TEMPLATE.LATLON && <td className="px-3 py-1.5">{18 + i * 4}</td>}
+                  {dataset.templateType === DATASET_TEMPLATE.LAT_LONG && <td className="px-3 py-1.5">{18 + i * 4}</td>}
                 </tr>
               ))}
             </tbody>

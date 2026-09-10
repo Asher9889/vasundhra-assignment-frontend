@@ -34,7 +34,7 @@ export const rejectionReasons = [
 
 export const columnGuides = [
   {
-    templateType: DATASET_TEMPLATE.LATLON,
+    templateType: DATASET_TEMPLATE.LAT_LONG,
     columns: [
       { name: "latitude", description: "Decimal latitude, e.g. 28.6139" },
       { name: "longitude", description: "Decimal longitude, e.g. 77.2090" },
@@ -43,7 +43,7 @@ export const columnGuides = [
     example: { latitude: "28.6139", longitude: "77.2090", value: "2050" },
   },
   {
-    templateType: DATASET_TEMPLATE.STATEWISE,
+    templateType: DATASET_TEMPLATE.STATE_WISE,
     columns: [
       { name: "state", description: "State or union territory name, e.g. Rajasthan" },
       { name: "value", description: "Numeric value for the state" },
@@ -51,7 +51,7 @@ export const columnGuides = [
     example: { state: "Rajasthan", value: "18350" },
   },
   {
-    templateType: DATASET_TEMPLATE.TIMESERIES,
+    templateType: DATASET_TEMPLATE.TIME_SERIES,
     columns: [
       { name: "date", description: "Date or year, e.g. 2024 or 2024-01-01" },
       { name: "value", description: "Numeric value at that point in time" },

@@ -20,9 +20,9 @@ interface ChartPreviewProps {
 
 export function ChartPreview({ data, title, domain, templateType, seriesType, height = 260 }: ChartPreviewProps) {
   const chartType =
-    templateType === DATASET_TEMPLATE.TIMESERIES
+    templateType === DATASET_TEMPLATE.TIME_SERIES
       ? seriesType
-      : templateType === DATASET_TEMPLATE.STATEWISE
+      : templateType === DATASET_TEMPLATE.STATE_WISE
         ? CHART_TYPE.STATE_HEATMAP
         : CHART_TYPE.INDIA_MAP
 

@@ -36,9 +36,9 @@ interface VisualizationConfigProps {
 }
 
 const templates: Array<{ value: DatasetTemplate; label: string; hint: string }> = [
-  { value: DATASET_TEMPLATE.LATLON, label: "Latitude / Longitude", hint: "Points on a map" },
-  { value: DATASET_TEMPLATE.STATEWISE, label: "State-wise", hint: "Values per state" },
-  { value: DATASET_TEMPLATE.TIMESERIES, label: "Time-series", hint: "Values over time" },
+  { value: DATASET_TEMPLATE.LAT_LONG, label: "Latitude / Longitude", hint: "Points on a map" },
+  { value: DATASET_TEMPLATE.STATE_WISE, label: "State-wise", hint: "Values per state" },
+  { value: DATASET_TEMPLATE.TIME_SERIES, label: "Time-series", hint: "Values over time" },
 ]
 
 const seriesOptions: Array<{ value: SeriesType; label: string }> = [
@@ -102,7 +102,7 @@ export function VisualizationConfig({
         </div>
       </div>
 
-      {templateType === DATASET_TEMPLATE.TIMESERIES && (
+      {templateType === DATASET_TEMPLATE.TIME_SERIES && (
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="space-y-2">
             <Label htmlFor="series-type">Chart Type</Label>
@@ -124,14 +124,14 @@ export function VisualizationConfig({
         </div>
       )}
 
-      {templateType === DATASET_TEMPLATE.STATEWISE && (
+      {templateType === DATASET_TEMPLATE.STATE_WISE && (
         <div className="grid gap-4 sm:grid-cols-2">
           <ColumnSelect label="State column" value={stateColumn} options={stateOptions} onChange={onStateColumnChange} id="state-column" />
           <ColumnSelect label="Value column" value={valueColumn} options={valueOptions} onChange={onValueColumnChange} id="value-column" />
         </div>
       )}
 
-      {templateType === DATASET_TEMPLATE.LATLON && (
+      {templateType === DATASET_TEMPLATE.LAT_LONG && (
         <div className="grid gap-4 sm:grid-cols-3">
           <ColumnSelect label="Latitude column" value={latitudeColumn} options={allColumns} onChange={onLatitudeColumnChange} id="latitude-column" />
           <ColumnSelect label="Longitude column" value={longitudeColumn} options={allColumns} onChange={onLongitudeColumnChange} id="longitude-column" />

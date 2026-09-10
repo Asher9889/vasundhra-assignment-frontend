@@ -46,9 +46,9 @@ export const chartTypeLabels: Record<ChartType, string> = {
 }
 
 export const templateLabels: Record<DatasetTemplate, string> = {
-  LATLON: "Latitude / Longitude",
-  STATEWISE: "State-wise",
-  TIMESERIES: "Time-series",
+LAT_LONG: "Latitude / Longitude",
+STATE_WISE: "State-wise",
+TIME_SERIES: "Time-series",
 }
 
 export const approvalLabels: Record<ApprovalStatus, string> = {

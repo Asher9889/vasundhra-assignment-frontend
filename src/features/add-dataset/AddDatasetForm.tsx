@@ -23,7 +23,7 @@ import { SuccessPanel } from "./components/SuccessPanel"
 import { suggestColumns } from "./csv"
 import { buildChartData } from "./chart-builder"
 import { useDatasetUpload } from "./hooks/useDatasetUpload"
-import type { ParsedCSV, SeriesType } from "./types/add-dataset.types"
+import type { SeriesType } from "./types/add-dataset.types"
 
 export function AddDatasetForm() {
   const navigate = useNavigate()
@@ -38,42 +38,29 @@ export function AddDatasetForm() {
   const [longitudeColumn, setLongitudeColumn] = useState("")
   const [title, setTitle] = useState("")
 
-
-
-  const { file, phase, parsedData, errors, selectFile, reset: resetUpload } = useDatasetUpload(applyParsedDefaults);
-
-  function applyParsedDefaults(result: ParsedCSV) {
-    setTemplateType(DATASET_TEMPLATE.TIMESERIES)
-    const suggestion = suggestColumns(result, DATASET_TEMPLATE.TIMESERIES)
-    setXColumn(suggestion.xColumn ?? "")
-    setValueColumn(suggestion.valueColumn ?? "")
-  }
+  const { file, phase, parsedData, errors, selectFile, reset: resetUpload } = useDatasetUpload()
 
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(SUBMIT_STATUS.IDLE)
 
-  const chartData = useMemo(
-    () =>
-      parsedData
-        ? buildChartData({
-          parsed: parsedData,
-          templateType,
-          seriesType,
-          xColumn,
-          valueColumn,
-          stateColumn,
-          latitudeColumn,
-          longitudeColumn,
-        })
-        : null,
+  const chartData = useMemo(() => parsedData ? buildChartData({
+    parsed: parsedData,
+    templateType,
+    seriesType,
+    xColumn,
+    valueColumn,
+    stateColumn,
+    latitudeColumn,
+    longitudeColumn,
+  }) : null,
     [parsedData, templateType, seriesType, xColumn, valueColumn, stateColumn, latitudeColumn, longitudeColumn]
   )
 
   const configComplete =
-    templateType === DATASET_TEMPLATE.TIMESERIES
+    templateType === DATASET_TEMPLATE.TIME_SERIES
       ? Boolean(xColumn && valueColumn)
-      : templateType === DATASET_TEMPLATE.STATEWISE
+      : templateType === DATASET_TEMPLATE.STATE_WISE
         ? Boolean(stateColumn && valueColumn)
-        : templateType === DATASET_TEMPLATE.LATLON
+        : templateType === DATASET_TEMPLATE.LAT_LONG
           ? Boolean(latitudeColumn && longitudeColumn && valueColumn)
           : false
 
@@ -100,15 +87,30 @@ export function AddDatasetForm() {
     setSubmitStatus(SUBMIT_STATUS.IDLE)
   }
 
+  function handleFileChange(next: File | null) {
+    if (!next) {
+      resetForm()
+      return
+    }
+    setTemplateType(null)
+    setSeriesType(CHART_TYPE.LINE)
+    setXColumn("")
+    setValueColumn("")
+    setStateColumn("")
+    setLatitudeColumn("")
+    setLongitudeColumn("")
+    selectFile(next)
+  }
+
   function handleTemplateChange(next: DatasetTemplate) {
     setTemplateType(next)
     if (!parsedData) return
 
     const suggestion = suggestColumns(parsedData, next)
-    if (next === DATASET_TEMPLATE.TIMESERIES) {
+    if (next === DATASET_TEMPLATE.TIME_SERIES) {
       setXColumn(suggestion.xColumn ?? "")
       setValueColumn(suggestion.valueColumn ?? "")
-    } else if (next === DATASET_TEMPLATE.STATEWISE) {
+    } else if (next === DATASET_TEMPLATE.STATE_WISE) {
       setStateColumn(suggestion.stateColumn ?? "")
       setValueColumn(suggestion.valueColumn ?? "")
     } else {
@@ -125,9 +127,9 @@ export function AddDatasetForm() {
     setSubmitStatus(SUBMIT_STATUS.SUBMITTING)
     window.setTimeout(() => {
       const chartType: Dataset["chartType"] =
-        templateType === DATASET_TEMPLATE.TIMESERIES
+        templateType === DATASET_TEMPLATE.TIME_SERIES
           ? seriesType
-          : templateType === DATASET_TEMPLATE.STATEWISE
+          : templateType === DATASET_TEMPLATE.STATE_WISE
             ? CHART_TYPE.STATE_HEATMAP
             : CHART_TYPE.INDIA_MAP
       const newDataset: Dataset = {
@@ -158,7 +160,7 @@ export function AddDatasetForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
-      <DatasetFileStep phase={phase} file={file} parsed={parsedData} errors={errors} onFile={selectFile} />
+      <DatasetFileStep phase={phase} file={file} parsed={parsedData} errors={errors} onFile={handleFileChange} />
 
       {phase === DATASET_UPLOAD_PHASE.VALID && parsedData && (
         <>

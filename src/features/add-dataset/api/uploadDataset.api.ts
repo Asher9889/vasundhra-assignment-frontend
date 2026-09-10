@@ -1,24 +1,14 @@
 import { apiRequest, apiEndPoints } from "@/config"
 import type { AxiosApiResponse } from "@/types/api-response.type"
-import type { ColumnType, ParsedCSV } from "../types/add-dataset.types"
+import type { CSVInvalidRow, ParsedColumn, ParsedCSV } from "../types/add-dataset.types"
 
 interface UploadDatasetResponse {
   results: Record<string, string | number>[]
-  columns: string[]
+  wrongData: CSVInvalidRow[]
+  columns: ParsedColumn[]
   rowCount: number
-}
-
-function inferColumnType(values: string[]): ColumnType {
-  const nonEmpty = values.filter((value) => value.trim() !== "")
-  if (nonEmpty.length === 0) return "STRING";
-
-  const numericCount = nonEmpty.filter((value) => !Number.isNaN(Number(value))).length
-  if (numericCount / nonEmpty.length >= 0.8) return "NUMBER";
-
-  const dateCount = nonEmpty.filter((value) => !Number.isNaN(Date.parse(value))).length
-  if (dateCount / nonEmpty.length >= 0.8) return "DATE";
-
-  return "STRING";
+  validCount: number
+  wrongCount: number
 }
 
 function cellValue(result: Record<string, string | number>, name: string): string {
@@ -27,12 +17,15 @@ function cellValue(result: Record<string, string | number>, name: string): strin
 }
 
 function toParsedCSV(payload: UploadDatasetResponse): ParsedCSV {
-  const columns = payload.columns.map((name) => {
-    const values = payload.results.map((result) => cellValue(result, name))
-    return { name, type: inferColumnType(values) }
-  });
-  const rows = payload.results.map((result) => payload.columns.map((name) => cellValue(result, name)));
-  return { columns, rows, rowCount: payload.rowCount }
+  const rows = payload.results.map((result) => payload.columns.map((column) => cellValue(result, column.name)));
+  return {
+    columns: payload.columns,
+    rows,
+    rowCount: payload.rowCount,
+    validCount: payload.validCount,
+    wrongCount: payload.wrongCount,
+    wrongData: payload.wrongData,
+  };
 }
 
 export async function uploadDataset(file: File): Promise<ParsedCSV> {

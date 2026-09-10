@@ -19,29 +19,40 @@ function getErrorMessage(error: unknown): string {
   return "Unable to parse the file. Please check that the file is valid CSV.";
 }
 
-export function useDatasetUpload(onParsed?: (parsedData: ParsedCSV) => void): UseDatasetUploadResult {
-  const [file, setFile] = useState<File | null>(null);
+export function useDatasetUpload(): UseDatasetUploadResult {
+  const [file, setFile] = useState<File | null>(null)
   const mutation = useMutation({
     mutationFn: (file: File) => uploadDataset(file),
-    onSuccess: (result) => {
-      if (result.columns.length > 0) onParsed?.(result);
-    },
   })
 
   const parsedData = mutation.isSuccess ? mutation.data : null
-  const isEmpty = mutation.isSuccess && mutation.data.columns.length === 0
-  const phase: DatasetUploadPhase = !file
-    ? DATASET_UPLOAD_PHASE.IDLE
-    : mutation.isPending
-      ? DATASET_UPLOAD_PHASE.UPLOADING
-      : mutation.isSuccess && !isEmpty
-        ? DATASET_UPLOAD_PHASE.VALID
-        : DATASET_UPLOAD_PHASE.INVALID
-  const errors = mutation.isError
-    ? [getErrorMessage(mutation.error)]
-    : isEmpty
-      ? ["The file is empty or could not be parsed as CSV."]
-      : []
+  const hasNoRows = parsedData !== null && parsedData.rowCount === 0
+  const hasNoValidRows = parsedData !== null && parsedData.validCount === 0
+
+  let phase: DatasetUploadPhase
+  if (!file) {
+    phase = DATASET_UPLOAD_PHASE.IDLE
+  } else if (mutation.isPending) {
+    phase = DATASET_UPLOAD_PHASE.UPLOADING
+  } else if (mutation.isError || hasNoRows || hasNoValidRows) {
+    phase = DATASET_UPLOAD_PHASE.INVALID
+  } else {
+    phase = DATASET_UPLOAD_PHASE.VALID
+  }
+
+  let errors: string[]
+  if (mutation.isError) {
+    errors = [getErrorMessage(mutation.error)]
+  } else if (hasNoRows) {
+    errors = ["The file is empty or could not be parsed as CSV."]
+  } else if (hasNoValidRows) {
+    errors = parsedData!.wrongData
+      .slice(0, 5)
+      .map((row) => `Row ${row.rowNumber}: ${row.errors.map((e) => e.message).join("; ")}`)
+    if (errors.length === 0) errors = ["No valid data rows found in the file."]
+  } else {
+    errors = []
+  }
 
   function selectFile(next: File | null) {
     if (!next) {

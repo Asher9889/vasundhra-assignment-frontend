@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { FileSpreadsheet, CheckCircle2, XCircle, UploadCloud, Loader2 } from "lucide-react"
+import { FileSpreadsheet, CheckCircle2, XCircle, UploadCloud, Loader2, AlertTriangle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -153,7 +153,31 @@ export function DatasetFileStep({ phase, file, parsed, errors, onFile }: Dataset
             <CheckCircle2 className="size-3.5" />
             Successfully parsed
           </span>
+          {parsed.wrongCount > 0 && (
+            <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
+              <AlertTriangle className="size-3.5" />
+              {formatNumber(parsed.validCount)} valid · {formatNumber(parsed.wrongCount)} invalid
+            </span>
+          )}
         </div>
+
+        {parsed.wrongCount > 0 && (
+          <div className="border-t pt-3">
+            <ul className="space-y-0.5">
+              {parsed.wrongData.slice(0, 5).map((entry) => (
+                <li key={entry.rowNumber} className="text-xs leading-relaxed text-muted-foreground">
+                  <span className="font-medium text-foreground">Row {entry.rowNumber}:</span>{" "}
+                  {entry.errors.map((e) => e.message).join("; ")}
+                </li>
+              ))}
+              {parsed.wrongData.length > 5 && (
+                <li className="text-xs text-muted-foreground">
+                  And {parsed.wrongData.length - 5} more invalid row{parsed.wrongData.length - 5 === 1 ? "" : "s"}…
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     ) : null
 

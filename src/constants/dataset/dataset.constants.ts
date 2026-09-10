@@ -13,9 +13,9 @@ export const CHART_TYPE = {
 } as const
 
 export const DATASET_TEMPLATE = {
-  LATLON: "LATLON",
-  STATEWISE: "STATEWISE",
-  TIMESERIES: "TIMESERIES",
+  LAT_LONG: "LAT_LONG",
+  STATE_WISE: "STATE_WISE",
+  TIME_SERIES: "TIME_SERIES",
 } as const
 
 export const APPROVAL_STATUS = {

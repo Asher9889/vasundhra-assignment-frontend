@@ -9,10 +9,24 @@ export interface ParsedColumn {
   type: ColumnType
 }
 
+export interface CSVInvalidRowError {
+  field: string
+  message: string
+}
+
+export interface CSVInvalidRow {
+  rowNumber: number
+  row: Record<string, string | number>
+  errors: CSVInvalidRowError[]
+}
+
 export interface ParsedCSV {
   columns: ParsedColumn[]
   rows: string[][]
   rowCount: number
+  validCount: number
+  wrongCount: number
+  wrongData: CSVInvalidRow[]
 }
 
 export interface AddDatasetFormState {

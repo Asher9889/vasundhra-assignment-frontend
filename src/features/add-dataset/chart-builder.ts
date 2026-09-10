@@ -36,7 +36,7 @@ export function buildChartData({
   if (!templateType || parsed.rows.length === 0) return null
   const records = toRecords(parsed)
 
-  if (templateType === DATASET_TEMPLATE.TIMESERIES) {
+  if (templateType === DATASET_TEMPLATE.TIME_SERIES) {
     if (!xColumn || !valueColumn) return null
     const points = records
       .map((record) => ({
@@ -53,7 +53,7 @@ export function buildChartData({
     }
   }
 
-  if (templateType === DATASET_TEMPLATE.STATEWISE) {
+  if (templateType === DATASET_TEMPLATE.STATE_WISE) {
     if (!stateColumn || !valueColumn) return null
     const states = records
       .map((record) => ({

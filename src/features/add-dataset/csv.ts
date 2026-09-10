@@ -39,7 +39,7 @@ export function suggestColumns(parsed: ParsedCSV, template: DatasetTemplate): Co
   const strings = columnNamesOfType(parsed, "STRING")
 
   switch (template) {
-    case DATASET_TEMPLATE.TIMESERIES: {
+    case DATASET_TEMPLATE.TIME_SERIES: {
       const xColumn =
         names.find((name) => /^(date|year|month|day|period)/i.test(name)) ??
         columnNamesOfType(parsed, "DATE")[0] ??
@@ -47,12 +47,12 @@ export function suggestColumns(parsed: ParsedCSV, template: DatasetTemplate): Co
       const valueColumn = pickValueColumn(numeric, [xColumn])
       return { xColumn, valueColumn }
     }
-    case DATASET_TEMPLATE.STATEWISE: {
+    case DATASET_TEMPLATE.STATE_WISE: {
       const stateColumn = strings.find((name) => /state|region|district/i.test(name)) ?? strings[0] ?? names[0]
       const valueColumn = pickValueColumn(numeric, [stateColumn])
       return { stateColumn, valueColumn }
     }
-    case DATASET_TEMPLATE.LATLON: {
+    case DATASET_TEMPLATE.LAT_LONG: {
       const latitudeColumn = names.find((name) => /^lat/i.test(name)) ?? numeric[0]
       const longitudeColumn = names.find((name) => /lon|long/i.test(name)) ?? numeric.find((name) => name !== latitudeColumn)
       const valueColumn = pickValueColumn(
