@@ -65,6 +65,10 @@ const apiEndPoints = {
             url: `/datasets/${id}/status`,
             method: "PATCH"
         }),
+        update: (id: string) => ({
+            url: `/datasets/${id}`,
+            method: "PATCH"
+        }),
     },
 }    
 

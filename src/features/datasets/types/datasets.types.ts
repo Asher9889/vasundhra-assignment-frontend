@@ -48,6 +48,14 @@ export interface DatasetListResponseItem {
   updatedAt: string
 }
 
+export interface DatasetUpdatePayload {
+  title?: string
+  domain?: Domain
+  templateType?: DatasetTemplate
+  chartType?: ChartType
+  visualizationConfig?: DatasetVisualizationConfig
+}
+
 export interface DatasetListResponse {
   datasets: DatasetListResponseItem[]
   pagination: {

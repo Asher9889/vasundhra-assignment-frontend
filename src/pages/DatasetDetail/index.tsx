@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import { DatasetReview } from "@/components/dataset/DatasetReview"
 import { EmptyState } from "@/components/common/EmptyState"
+import { EditDatasetDialog } from "@/features/datasets/EditDatasetDialog"
 import { useAuth } from "@/hooks/useAuth"
 import { USER_ROLE } from "@/constants/user/user.constant"
 import { useDatasetDetailQuery } from "@/features/datasets/hooks/useDatasetDetailQuery"
@@ -33,6 +34,7 @@ export default function DatasetDetailPage() {
 
   const canModerate = user?.role === USER_ROLE.SUPER_ADMIN
   const [dialog, setDialog] = useState<DialogKind>(null)
+  const [editing, setEditing] = useState(false)
   const [reason, setReason] = useState("")
   const updateStatus = useUpdateDatasetStatusMutation()
 
@@ -97,10 +99,12 @@ export default function DatasetDetailPage() {
           <ArrowLeft className="size-4" />
           Back
         </Button>
-        <Button variant="outline" size="sm" onClick={() => toast.info("Edit is not available in this demo.")}>
-          <Pencil className="size-4" />
-          Edit
-        </Button>
+        {canModerate && (
+          <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
+            <Pencil className="size-4" />
+            Edit
+          </Button>
+        )}
       </div>
 
       <DatasetReview dataset={dataset} rows={detail?.rows} columns={detail?.csvSchema?.columns} />
@@ -184,6 +188,8 @@ export default function DatasetDetailPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {editing && <EditDatasetDialog datasetId={current.id} onClose={() => setEditing(false)} />}
     </div>
   )
 }

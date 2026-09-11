@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
+import { EditDatasetDialog } from "@/features/datasets/EditDatasetDialog"
 import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
 import { useUpdateDatasetStatusMutation } from "@/features/datasets/hooks/useUpdateDatasetStatusMutation"
 import { getAdminSummaryStats, getDatasetSummaryStats } from "@/mock/dashboard"
@@ -31,6 +32,7 @@ export default function SuperAdminDashboard() {
   const [search, setSearch] = useState("")
   const [dialog, setDialog] = useState<DialogKind>(null)
   const [target, setTarget] = useState<Dataset | null>(null)
+  const [editId, setEditId] = useState<string | null>(null)
   const [reason, setReason] = useState("")
   const updateStatus = useUpdateDatasetStatusMutation()
 
@@ -54,7 +56,7 @@ export default function SuperAdminDashboard() {
     } else if (action === "delete") {
       toast.info("Delete is not available in this demo.")
     } else if (action === "edit") {
-      toast.info("Edit is not available in this demo.")
+      setEditId(dataset.id)
     }
   }
 
@@ -188,6 +190,8 @@ export default function SuperAdminDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {editId && <EditDatasetDialog datasetId={editId} onClose={() => setEditId(null)} />}
     </div>
   )
 }

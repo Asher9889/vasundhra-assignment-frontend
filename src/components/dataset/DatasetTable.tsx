@@ -159,14 +159,14 @@ export function DatasetTable({
                         <Eye className="size-4" />
                         View
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => onAction?.("edit", dataset)}>
-                        <Pencil className="size-4" />
-                        Edit
-                      </DropdownMenuItem>
                     </DropdownMenuGroup>
                     {role === "super-admin" && (
                       <>
                         <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => onAction?.("edit", dataset)}>
+                          <Pencil className="size-4" />
+                          Edit
+                        </DropdownMenuItem>
                         {dataset.status !== APPROVAL_STATUS.APPROVED && (
                           <DropdownMenuItem onClick={() => onAction?.("approve", dataset)}>
                             <CheckCircle2 className="size-4" />
@@ -179,13 +179,13 @@ export function DatasetTable({
                             Reject
                           </DropdownMenuItem>
                         )}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => onAction?.("delete", dataset)} variant="destructive">
+                          <Trash2 className="size-4" />
+                          Delete
+                        </DropdownMenuItem>
                       </>
                     )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => onAction?.("delete", dataset)} variant="destructive">
-                      <Trash2 className="size-4" />
-                      Delete
-                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

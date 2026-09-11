@@ -7,11 +7,11 @@ export function formatFileSize(bytes: number): string {
   return `${(bytes / 1024).toFixed(1)} KB`
 }
 
-export function columnNames(parsed: ParsedCSV): string[] {
+export function columnNames(parsed: Pick<ParsedCSV, "columns">): string[] {
   return parsed.columns.map((column) => column.name)
 }
 
-export function columnNamesOfType(parsed: ParsedCSV, type: ColumnType): string[] {
+export function columnNamesOfType(parsed: Pick<ParsedCSV, "columns">, type: ColumnType): string[] {
   return parsed.columns.filter((column) => column.type === type).map((column) => column.name)
 }
 
@@ -33,7 +33,7 @@ function pickValueColumn(numeric: string[], excluded: string[] = []): string | u
   )
 }
 
-export function suggestColumns(parsed: ParsedCSV, template: DatasetTemplate): ColumnSuggestions {
+export function suggestColumns(parsed: Pick<ParsedCSV, "columns">, template: DatasetTemplate): ColumnSuggestions {
   const names = columnNames(parsed)
   const numeric = columnNamesOfType(parsed, "NUMBER")
   const strings = columnNamesOfType(parsed, "STRING")

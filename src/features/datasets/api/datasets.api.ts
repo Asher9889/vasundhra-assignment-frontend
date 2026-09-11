@@ -6,6 +6,7 @@ import type {
   DatasetListQueryParams,
   DatasetListResponse,
   DatasetListResponseItem,
+  DatasetUpdatePayload,
 } from "../types/datasets.types"
 
 export interface UpdateDatasetStatusPayload {
@@ -63,6 +64,12 @@ export async function getPublicDatasetDetail(id: string): Promise<DatasetDetailR
 
 export async function updateDatasetStatus(id: string, payload: UpdateDatasetStatusPayload): Promise<Dataset> {
   const { url, method } = apiEndPoints.datasets.updateStatus(id)
+  const response = await apiRequest<AxiosApiResponse<DatasetListResponseItem>>({ url, method, data: payload })
+  return toDatasetMetadata(response.data)
+}
+
+export async function updateDataset(id: string, payload: DatasetUpdatePayload): Promise<Dataset> {
+  const { url, method } = apiEndPoints.datasets.update(id)
   const response = await apiRequest<AxiosApiResponse<DatasetListResponseItem>>({ url, method, data: payload })
   return toDatasetMetadata(response.data)
 }
