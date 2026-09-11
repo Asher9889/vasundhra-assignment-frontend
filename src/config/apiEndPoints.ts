@@ -12,6 +12,14 @@ const apiEndPoints = {
             url: "/auth/logout",
             method: "POST"
         },
+        forgotPassword: {
+            url: "/auth/forgot-password",
+            method: "POST"
+        },
+        resetPassword: {
+            url: "/auth/reset-password",
+            method: "POST"
+        },
 
     },
     users: {

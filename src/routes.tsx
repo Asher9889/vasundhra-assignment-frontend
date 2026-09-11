@@ -8,6 +8,8 @@ import { AdminShell } from "@/components/layout/AdminShell"
 import NotFoundPage from "@/pages/NotFound"
 
 import LoginPage from "@/pages/Login"
+import ForgotPasswordPage from "@/pages/ForgotPassword"
+import ResetPasswordPage from "@/pages/ResetPassword"
 import HomePage from "@/pages/Home"
 import ClimatePage from "@/pages/Climate"
 import EnergyPage from "@/pages/Energy"
@@ -43,7 +45,11 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <PublicRoute />,
-        children: [{ path: "/login", element: <LoginPage /> }],
+        children: [
+          { path: "/login", element: <LoginPage /> },
+          { path: "/forgot-password", element: <ForgotPasswordPage /> },
+          { path: "/reset-password", element: <ResetPasswordPage /> },
+        ],
       },
 
       // {
