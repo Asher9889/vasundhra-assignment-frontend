@@ -12,6 +12,8 @@ const PROJECTION = {
   lonMax: 97.5,
 }
 
+const VIEW_PADDING = { x: 26, y: 30 }
+
 interface IndiaLocation {
   id: string
   name: string
@@ -42,6 +44,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps) {
   const viewBox = project(6.5, 68)
+  const viewBoxString = `${-VIEW_PADDING.x} ${-VIEW_PADDING.y} ${viewBox.width + VIEW_PADDING.x * 2} ${viewBox.height + VIEW_PADDING.y * 2}`
   const [scale, setScale] = useState(1)
   const [translate, setTranslate] = useState({ x: 0, y: 0 })
   const [hovered, setHovered] = useState<string | null>(null)
@@ -61,6 +64,8 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
 
   const maxValue = Math.max(...positioned.map((p) => p.value), 1)
   const selectedPoint = positioned.find((p) => p.id === selected)
+  const hoveredPoint = positioned.find((p) => p.id === hovered)
+  const activePoint = hoveredPoint ?? selectedPoint
 
   function reset() {
     setScale(1)
@@ -104,7 +109,7 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
         aria-label="Interactive map of India with data points"
       >
         <svg
-          viewBox={`0 0 ${viewBox.width} ${viewBox.height}`}
+          viewBox={viewBoxString}
           className="h-full w-full select-none"
           preserveAspectRatio="xMidYMid meet"
           onPointerDown={onPointerDown}
@@ -118,7 +123,7 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
                 key={loc.id}
                 id={loc.id}
                 d={loc.path}
-                fill={hovered === loc.name ? "var(--muted-foreground)" : "rgba(120,140,160,0.18)"}
+                fill="rgba(120,140,160,0.18)"
                 stroke="var(--border)"
                 strokeWidth={0.6}
                 className="transition-colors"
@@ -129,12 +134,13 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
             {positioned.map((p) => {
               const r = 4 + (p.value / maxValue) * 9
               const isSelected = selected === p.id
+              const isHovered = hovered === p.id
               return (
                 <g
                   key={p.id}
                   transform={`translate(${p.x}, ${p.y})`}
                   className="cursor-pointer"
-                  onMouseEnter={() => setHovered(p.name)}
+                  onMouseEnter={() => setHovered(p.id)}
                   onMouseLeave={() => setHovered(null)}
                   onClick={() => setSelected((cur) => (cur === p.id ? null : p.id))}
                 >
@@ -142,9 +148,9 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
                   <circle
                     r={r}
                     fill={colorForCategory(p.category)}
-                    fillOpacity={0.75}
+                    fillOpacity={isHovered ? 0.95 : 0.75}
                     stroke="white"
-                    strokeWidth={hovered === p.name || isSelected ? 2 : 1.2}
+                    strokeWidth={isHovered || isSelected ? 2 : 1.2}
                     className="transition-all"
                   />
                   {isSelected && <circle r={r + 3} fill="none" stroke={colorForCategory(p.category)} strokeWidth={1.5} />}
@@ -168,9 +174,14 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
           </div>
         )}
 
-        {hovered && (
+        {hoveredPoint && (
           <div className="pointer-events-none absolute left-2 top-2 rounded-md bg-popover/95 px-2.5 py-1.5 text-xs shadow-md ring-1 ring-border">
-            {hovered}
+            <p className="font-medium">{hoveredPoint.name}</p>
+            <p className="text-muted-foreground">
+              {hoveredPoint.value.toLocaleString("en-IN")}
+              {data.unit ? ` ${data.unit}` : ""}
+              {hoveredPoint.category ? ` · ${hoveredPoint.category}` : ""}
+            </p>
           </div>
         )}
       </div>
@@ -178,22 +189,25 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
       <div
         className={cn(
           "mt-3 flex items-start gap-3 rounded-md border p-3 text-xs transition-opacity",
-          selectedPoint ? "opacity-100" : "opacity-60"
+          activePoint ? "opacity-100" : "opacity-60"
         )}
         aria-live="polite"
       >
-        {selectedPoint ? (
+        {activePoint ? (
           <>
             <span
               className="mt-0.5 size-2.5 shrink-0 rounded-full"
-              style={{ backgroundColor: colorForCategory(selectedPoint.category) }}
+              style={{ backgroundColor: colorForCategory(activePoint.category) }}
             />
             <div className="min-w-0 space-y-0.5">
-              <p className="font-medium text-foreground">{selectedPoint.name}</p>
+              <p className="font-medium text-foreground">
+                {activePoint.name}
+                {selectedPoint === activePoint && <span className="ml-2 text-primary">Pinned</span>}
+              </p>
               <p className="text-muted-foreground">
-                {selectedPoint.category ?? "Data point"} · {selectedPoint.value.toLocaleString("en-IN")}
-                {data.unit ? ` ${data.unit}` : ""} at {selectedPoint.latitude.toFixed(2)}°N,{" "}
-                {selectedPoint.longitude.toFixed(2)}°E
+                {activePoint.category ?? "Data point"} · {activePoint.value.toLocaleString("en-IN")}
+                {data.unit ? ` ${data.unit}` : ""} at {activePoint.latitude.toFixed(2)}°N,{" "}
+                {activePoint.longitude.toFixed(2)}°E
               </p>
             </div>
           </>

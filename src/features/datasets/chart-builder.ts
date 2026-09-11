@@ -67,7 +67,7 @@ export function buildChartDataFromApiDetail(detail: DatasetDetailResponse): Char
         if (latitude === null || longitude === null || value === null) return null
         return {
           id: `row-${rowIndex}`,
-          name: valueColumn,
+          name: `Point ${rowIndex + 1}`,
           latitude,
           longitude,
           value,

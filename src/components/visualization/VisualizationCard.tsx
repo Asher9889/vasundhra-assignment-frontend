@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { ArrowRight, CalendarDays } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
+import { CHART_TYPE } from "@/constants/dataset/dataset.constants"
 import type { Dataset } from "@/constants/dataset/dataset.types"
 import { VisualizationRenderer } from "./VisualizationRenderer"
 import { chartTypeLabels, domainLabels, formatDate } from "@/lib/format"
@@ -22,12 +23,13 @@ export function VisualizationCard({
   aspect = "standard",
   isLoading = false,
 }: VisualizationCardProps) {
+  const isMap = dataset.chartType === CHART_TYPE.INDIA_MAP || dataset.chartType === CHART_TYPE.STATE_HEATMAP
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-lg border bg-card">
       <div
         className={cn(
           "relative border-b bg-[var(--muted)]/30",
-          aspect === "wide" ? "aspect-[16/7]" : "aspect-[4/3]"
+          isMap ? "aspect-[4/5]" : aspect === "wide" ? "aspect-[16/7]" : "aspect-[4/3]"
         )}
       >
         <div className="absolute inset-0 p-3">
