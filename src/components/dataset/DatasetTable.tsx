@@ -18,6 +18,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -145,22 +146,24 @@ export function DatasetTable({
                     <MoreHorizontal className="size-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-40">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem
-                      onClick={() => onAction?.("view", dataset)}
-                      render={
-                        detailHref ? (
-                          <Link to={detailHref(dataset)} className="flex items-center gap-1.5" />
-                        ) : undefined
-                      }
-                    >
-                      <Eye className="size-4" />
-                      View
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onAction?.("edit", dataset)}>
-                      <Pencil className="size-4" />
-                      Edit
-                    </DropdownMenuItem>
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuItem
+                        onClick={() => onAction?.("view", dataset)}
+                        render={
+                          detailHref ? (
+                            <Link to={detailHref(dataset)} className="flex items-center gap-1.5" />
+                          ) : undefined
+                        }
+                      >
+                        <Eye className="size-4" />
+                        View
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => onAction?.("edit", dataset)}>
+                        <Pencil className="size-4" />
+                        Edit
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
                     {role === "super-admin" && (
                       <>
                         <DropdownMenuSeparator />

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -57,7 +58,9 @@ export function AdminHeader({ title, roleLabel, currentUser, onMenuClick, showSe
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-72">
-            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             {notifications.map((n) => (
               <DropdownMenuItem key={n.id} className="flex-col items-start gap-0.5 text-xs">
@@ -87,12 +90,14 @@ export function AdminHeader({ title, roleLabel, currentUser, onMenuClick, showSe
             aria-label="Account menu"
           />
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              <div className="leading-tight">
-                <p className="text-sm font-medium text-foreground">{currentUser?.name ?? "Admin"}</p>
-                <p className="mt-0.5 text-xs font-normal text-muted-foreground">{roleLabel}</p>
-              </div>
-            </DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>
+                <div className="leading-tight">
+                  <p className="text-sm font-medium text-foreground">{currentUser?.name ?? "Admin"}</p>
+                  <p className="mt-0.5 text-xs font-normal text-muted-foreground">{roleLabel}</p>
+                </div>
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               {currentUser?.email ?? "admin@vasudha.org"}

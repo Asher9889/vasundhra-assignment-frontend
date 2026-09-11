@@ -18,13 +18,12 @@ import { Input } from "@/components/ui/input"
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
 import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
 import { useUpdateDatasetStatusMutation } from "@/features/datasets/hooks/useUpdateDatasetStatusMutation"
-import { updateMockDatasets } from "@/lib/dataset-store"
 import { getAdminSummaryStats, getDatasetSummaryStats } from "@/mock/dashboard"
 import { rejectionReasons } from "@/mock/csv-validation"
 import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
 import type { Dataset } from "@/constants/dataset/dataset.types"
 
-type DialogKind = "approve" | "reject" | "delete" | null
+type DialogKind = "approve" | "reject" | null
 
 export default function SuperAdminDashboard() {
   const navigate = useNavigate()
@@ -33,7 +32,6 @@ export default function SuperAdminDashboard() {
   const [dialog, setDialog] = useState<DialogKind>(null)
   const [target, setTarget] = useState<Dataset | null>(null)
   const [reason, setReason] = useState("")
-  const [submitting, setSubmitting] = useState(false)
   const updateStatus = useUpdateDatasetStatusMutation()
 
   const datasetStats = { ...getDatasetSummaryStats(datasets), total: pagination?.total ?? datasets.length }
@@ -54,8 +52,7 @@ export default function SuperAdminDashboard() {
       setReason("")
       setDialog("reject")
     } else if (action === "delete") {
-      setTarget(dataset)
-      setDialog("delete")
+      toast.info("Delete is not available in this demo.")
     } else if (action === "edit") {
       toast.info("Edit is not available in this demo.")
     }
@@ -75,18 +72,6 @@ export default function SuperAdminDashboard() {
     setDialog(null)
     setTarget(null)
     setReason("")
-  }
-
-  function confirmDelete() {
-    if (!target) return
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.filter((d) => d.id !== target.id))
-      setSubmitting(false)
-      setDialog(null)
-      setTarget(null)
-      toast.success(`"${target.title}" deleted.`)
-    }, 500)
   }
 
   return (
@@ -146,7 +131,7 @@ export default function SuperAdminDashboard() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
+            <Button variant="outline" onClick={() => setDialog(null)}>
               Cancel
             </Button>
             <Button onClick={confirmApprove} disabled={updateStatus.isPending}>
@@ -194,30 +179,11 @@ export default function SuperAdminDashboard() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
+            <Button variant="outline" onClick={() => setDialog(null)}>
               Cancel
             </Button>
             <Button variant="destructive" onClick={confirmReject} disabled={updateStatus.isPending || !reason.trim()}>
               {updateStatus.isPending ? "Rejecting…" : "Reject Dataset"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={dialog === "delete"} onOpenChange={(open) => !open && setDialog(null)}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete dataset</DialogTitle>
-            <DialogDescription>
-              “{target?.title}” will be permanently removed. This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={confirmDelete} disabled={submitting}>
-              {submitting ? "Deleting…" : "Delete Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>

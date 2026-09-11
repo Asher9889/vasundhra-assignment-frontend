@@ -20,11 +20,10 @@ import { useAuth } from "@/hooks/useAuth"
 import { USER_ROLE } from "@/constants/user/user.constant"
 import { useDatasetDetailQuery } from "@/features/datasets/hooks/useDatasetDetailQuery"
 import { useUpdateDatasetStatusMutation } from "@/features/datasets/hooks/useUpdateDatasetStatusMutation"
-import { updateMockDatasets } from "@/lib/dataset-store"
 import { rejectionReasons } from "@/mock/csv-validation"
 import { APPROVAL_STATUS } from "@/constants/dataset/dataset.constants"
 
-type DialogKind = "approve" | "reject" | "delete" | null
+type DialogKind = "approve" | "reject" | null
 
 export default function DatasetDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -35,7 +34,6 @@ export default function DatasetDetailPage() {
   const canModerate = user?.role === USER_ROLE.SUPER_ADMIN
   const [dialog, setDialog] = useState<DialogKind>(null)
   const [reason, setReason] = useState("")
-  const [submitting, setSubmitting] = useState(false)
   const updateStatus = useUpdateDatasetStatusMutation()
 
   if (isPending) {
@@ -92,17 +90,6 @@ export default function DatasetDetailPage() {
     setReason("")
   }
 
-  function confirmDelete() {
-    setSubmitting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.filter((d) => d.id !== current.id))
-      setSubmitting(false)
-      setDialog(null)
-      toast.success(`"${current.title}" deleted.`)
-      navigate(-1)
-    }, 500)
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -119,7 +106,7 @@ export default function DatasetDetailPage() {
       <DatasetReview dataset={dataset} rows={detail?.rows} columns={detail?.csvSchema?.columns} />
 
       <div className="flex flex-wrap justify-end gap-2 border-t pt-5">
-        <Button variant="destructive" onClick={() => setDialog("delete")}>
+        <Button variant="destructive" onClick={() => toast.info("Delete is not available in this demo.")}>
           Delete
         </Button>
         {canModerate && (
@@ -152,7 +139,7 @@ export default function DatasetDetailPage() {
             <DialogDescription>Publishing “{dataset.title}” will make this visualization visible on the public website.</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
+            <Button variant="outline" onClick={() => setDialog(null)}>
               Cancel
             </Button>
             <Button onClick={confirmApprove} disabled={updateStatus.isPending}>
@@ -188,28 +175,11 @@ export default function DatasetDetailPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
+            <Button variant="outline" onClick={() => setDialog(null)}>
               Cancel
             </Button>
             <Button variant="destructive" onClick={confirmReject} disabled={updateStatus.isPending || !reason.trim()}>
               {updateStatus.isPending ? "Rejecting…" : "Reject Dataset"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={dialog === "delete"} onOpenChange={(open) => !open && setDialog(null)}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete dataset</DialogTitle>
-            <DialogDescription>“{dataset.title}” will be permanently removed. This action cannot be undone.</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDialog(null)} disabled={submitting}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={confirmDelete} disabled={submitting}>
-              {submitting ? "Deleting…" : "Delete Dataset"}
             </Button>
           </DialogFooter>
         </DialogContent>

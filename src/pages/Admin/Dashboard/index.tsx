@@ -6,43 +6,20 @@ import { StatCard } from "@/components/common/StatCard"
 import { PageHeader } from "@/components/common/PageHeader"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { DatasetTable, type DatasetAction } from "@/components/dataset/DatasetTable"
 import { useDatasetsQuery } from "@/features/datasets/hooks/useDatasetsQuery"
-import { updateMockDatasets } from "@/lib/dataset-store"
 import { getDatasetSummaryStats } from "@/mock/dashboard"
-import type { Dataset } from "@/constants/dataset/dataset.types"
 
 export default function AdminDashboardPage() {
   const { datasets, pagination, isPending } = useDatasetsQuery({ limit: 50 })
   const [search, setSearch] = useState("")
-  const [deleteTarget, setDeleteTarget] = useState<Dataset | null>(null)
-  const [deleting, setDeleting] = useState(false)
 
   const stats = { ...getDatasetSummaryStats(datasets), total: pagination?.total ?? datasets.length }
   const rows = datasets.filter((d) => d.title.toLowerCase().includes(search.toLowerCase()))
 
-  function onAction(action: DatasetAction, dataset: Dataset) {
-    if (action === "delete") setDeleteTarget(dataset)
+  function onAction(action: DatasetAction) {
+    if (action === "delete") toast.info("Delete is not available in this demo.")
     else if (action === "edit") toast.info("Edit is not available in this demo.")
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    setDeleting(true)
-    window.setTimeout(() => {
-      updateMockDatasets((cur) => cur.filter((d) => d.id !== deleteTarget.id))
-      setDeleting(false)
-      setDeleteTarget(null)
-      toast.success(`"${deleteTarget.title}" deleted.`)
-    }, 500)
   }
 
   return (
@@ -90,23 +67,6 @@ export default function AdminDashboardPage() {
           emptyDescription="Submit your first dataset to see it here."
         />
       </div>
-
-      <Dialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete dataset</DialogTitle>
-            <DialogDescription>“{deleteTarget?.title}” will be permanently removed. This action cannot be undone.</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={deleting}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={confirmDelete} disabled={deleting}>
-              {deleting ? "Deleting…" : "Delete Dataset"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
