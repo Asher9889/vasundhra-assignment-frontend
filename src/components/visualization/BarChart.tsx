@@ -32,7 +32,7 @@ function buildSeriesData(series: Array<{ name: string; points: SeriesDataPoint[]
   return { rows, keys }
 }
 
-export function BarChart({ data, height = 280 }: BarChartProps) {
+export function BarChart({ data, height }: BarChartProps) {
   const series = data.series ?? []
   const { rows, keys } = buildSeriesData(series)
 
@@ -45,7 +45,7 @@ export function BarChart({ data, height = 280 }: BarChartProps) {
   }
 
   return (
-    <div style={{ width: "100%", height }} className="text-xs">
+    <div style={{ width: "100%", height: height ?? "100%" }} className="text-xs">
       <ResponsiveContainer width="100%" height="100%">
         <RechartsBarChart data={rows} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />

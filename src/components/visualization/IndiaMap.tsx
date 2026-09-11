@@ -42,7 +42,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   Power: "#ef4444",
 }
 
-export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps) {
+export function IndiaMap({ data, height, showZoom = true }: IndiaMapProps) {
   const viewBox = project(6.5, 68)
   const viewBoxString = `${-VIEW_PADDING.x} ${-VIEW_PADDING.y} ${viewBox.width + VIEW_PADDING.x * 2} ${viewBox.height + VIEW_PADDING.y * 2}`
   const [scale, setScale] = useState(1)
@@ -104,7 +104,7 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
     <div className="relative flex flex-col">
       <div
         className="relative w-full overflow-hidden rounded-lg border bg-[var(--muted)]/30"
-        style={{ height }}
+        style={{ height: height ?? "100%" }}
         role="img"
         aria-label="Interactive map of India with data points"
       >
@@ -189,7 +189,7 @@ export function IndiaMap({ data, height = 380, showZoom = true }: IndiaMapProps)
       <div
         className={cn(
           "mt-3 flex items-start gap-3 rounded-md border p-3 text-xs transition-opacity",
-          activePoint ? "opacity-100" : "opacity-60"
+          activePoint ? "opacity-100 border-0" : "opacity-60"
         )}
         aria-live="polite"
       >

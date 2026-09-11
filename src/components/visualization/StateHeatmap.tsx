@@ -141,7 +141,7 @@ function computeLabelPos(el: SVGPathElement): LabelPos {
   return { x: best.x, y: best.y, size }
 }
 
-export function StateHeatmap({ data, height = 520 }: StateHeatmapProps) {
+export function StateHeatmap({ data, height }: StateHeatmapProps) {
   const [hovered, setHovered] = useState<string | null>(null)
   const [labels, setLabels] = useState<Record<string, LabelPos>>({})
   const svgRef = useRef<SVGSVGElement | null>(null)
@@ -176,7 +176,7 @@ export function StateHeatmap({ data, height = 520 }: StateHeatmapProps) {
   }, [])
 
   return (
-    <div className="relative w-full overflow-hidden rounded-lg border bg-[var(--muted)]/30" style={{ height }}>
+    <div className="relative w-full overflow-hidden rounded-lg border bg-[var(--muted)]/30" style={{ height: height ?? "100%" }}>
       <svg
         ref={svgRef}
         viewBox={viewBox}
@@ -250,14 +250,14 @@ export function StateHeatmap({ data, height = 520 }: StateHeatmapProps) {
       )}
 
       <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-3">
-        <div className="rounded-md border bg-background/90 px-3 py-2 text-xs shadow-sm backdrop-blur-sm">
-          <div className="mb-1 h-2 w-32 rounded-full" style={{ background: `linear-gradient(to right, ${COLOR_STOPS.map((s) => s.color).join(", ")})` }} />
-          <div className="flex justify-between text-[10px] text-muted-foreground">
+        {/* <div className="rounded-md border bg-background/90 px-3 py-2 text-xs shadow-sm backdrop-blur-sm"> */}
+          {/* <div className="mb-1 h-2 w-32 rounded-full" style={{ background: `linear-gradient(to right, ${COLOR_STOPS.map((s) => s.color).join(", ")})` }} /> */}
+          {/* <div className="flex justify-between text-[10px] text-muted-foreground">
             <span>{formatNumber(min)}</span>
             <span>{formatNumber(max)}</span>
             <span>{data.unit ?? "value"}</span>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
         <p className="shrink-0 text-[10px] text-muted-foreground">{stateValues.length} states with data</p>
       </div>
 
