@@ -50,9 +50,9 @@ export function PublicFooter() {
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} Vasudha Foundation. All rights reserved.
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          {/* <p className="mt-1 text-xs text-muted-foreground">
             This is a demonstration interface. Data shown is sample data for UI evaluation.
-          </p>
+          </p> */}
         </div>
       </div>
     </footer>
